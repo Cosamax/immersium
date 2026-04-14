@@ -1,0 +1,36 @@
+# Immersium - Plateforme Pédagogique Immersive
+
+> Apprends en faisant, pas en observant.
+
+Immersium est une plateforme pédagogique innovante qui plonge les apprenants dans des entreprises fictives réalistes pour développer leurs compétences professionnelles par la pratique.
+
+## À qui s'adresse Immersium ?
+- Étudiants et apprentis en alternance
+- Professionnels en reconversion ou en quête de progression
+- CFA (Centres de Formation d'Apprentis) et organismes de formation
+- Formateurs indépendants
+
+## Comment ça marche ?
+1. **Immersion totale** : L'apprenant joue un rôle réel dans une entreprise fictive avec de vrais documents.
+2. **Outils réels** : Utilisation des vrais outils du métier (Canva, CNIL, Brevo, Google Analytics...).
+3. **Débrief pédagogique** : Chaque décision est analysée et expliquée pour ancrer l'apprentissage.
+
+## Catalogue des formations (Simulations)
+Chaque simulation coûte 49 € par apprenant et comprend 21 challenges (63 questions).
+
+1. **LUMERO (Marketing Opérationnel)** : Vous êtes Responsable Marketing. Lisez les vrais documents de l'entreprise et prenez les bonnes décisions budgétaires et stratégiques.
+2. **LUMIO (Marketing Digital)** : Accompagnez une créatrice dans sa transition vers le digital (SEO, Emailing, Réseaux Sociaux, Google Ads).
+3. **SIGNAL (Communication)** : Maîtrisez l'art des consignes professionnelles écrites et orales.
+4. **VELA (Stratégie Marketing Digital)** : Diagnostic, construction et déploiement d'une stratégie de A à Z.
+5. **NEXIO (Transformation Digitale)** : Guidez une PME de distribution B2B dans sa transformation digitale.
+6. **SOLARIS (IA Générative Professionnelle)** : Maîtrisez l'IA dans le travail quotidien (prompts, sécurité, éthique).
+7. **AURORA (Parcours Client Physique)** : Cartographiez et optimisez le parcours client d'un groupe multi-sites.
+8. **EDEN (Excellence de l'Accueil)** : Transformez l'accueil client vers l'exceptionnel (hôtellerie, clinique, coworking, restaurant).
+
+## Contact
+- Site web : https://immersium.fr
+- Email général : contact@immersium.fr
+- Support technique : support@immersium.fr
+- Commercial (CFA/Entreprises) : commercial@immersium.fr
+- DPO (Données personnelles) : dpo@immersium.fr
+- Adresse : 12 rue de la Formation, 75001 Paris, France

@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Conditions Générales de Vente — Immersium</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --ink:#07080F;--gray:#5A6278;--gray-light:#9AA0B4;
+  --bg:#FFFFFF;--bg2:#F5F6FA;--border:rgba(7,8,15,0.07);
+  --primary:#4F20E8;--primary-light:#EDE8FD;
+  --r-md:10px;--r-lg:16px;--r-xl:24px;
+}
+body{font-family:'Outfit',sans-serif;background:var(--bg2);color:var(--ink);min-height:100vh;}
+.page{max-width:860px;margin:0 auto;padding:1.5rem 1.25rem 4rem;}
+
+nav{display:flex;align-items:center;justify-content:space-between;padding:0.875rem 1.5rem;background:#fff;border:0.5px solid var(--border);border-radius:var(--r-lg);margin-bottom:14px;}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:500;color:var(--ink);text-decoration:none;}
+.nav-logo span{color:var(--primary);}
+.nav-back{font-size:13px;color:var(--gray);text-decoration:none;display:flex;align-items:center;gap:6px;transition:color 0.15s;}
+.nav-back:hover{color:var(--ink);}
+.nav-back svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;}
+
+.doc-wrap{background:#fff;border:0.5px solid var(--border);border-radius:var(--r-xl);overflow:hidden;}
+
+.doc-header{background:var(--ink);padding:2.5rem 3rem;}
+.doc-eyebrow{font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:10px;}
+.doc-title{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:500;color:#fff;margin-bottom:8px;}
+.doc-meta{font-size:13px;color:rgba(255,255,255,0.5);line-height:1.6;}
+
+.doc-body{padding:2.5rem 3rem;}
+
+.toc{background:var(--bg2);border:0.5px solid var(--border);border-radius:var(--r-lg);padding:1.25rem 1.5rem;margin-bottom:2.5rem;}
+.toc-title{font-size:12px;font-weight:500;color:var(--gray);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:10px;}
+.toc-list{display:flex;flex-direction:column;gap:4px;}
+.toc-item{display:flex;align-items:baseline;gap:8px;}
+.toc-num{font-size:12px;color:var(--gray-light);min-width:24px;}
+.toc-link{font-size:13px;color:var(--primary);text-decoration:none;transition:opacity 0.15s;}
+.toc-link:hover{opacity:0.7;}
+
+.article{margin-bottom:2.5rem;}
+.article-header{display:flex;align-items:baseline;gap:12px;margin-bottom:1rem;padding-bottom:0.75rem;border-bottom:0.5px solid var(--border);}
+.article-num{font-size:13px;font-weight:500;color:var(--primary);min-width:28px;}
+.article-title{font-size:18px;font-weight:500;color:var(--ink);font-family:'Cormorant Garamond',serif;}
+
+.article p{font-size:14px;color:var(--gray);line-height:1.8;margin-bottom:0.875rem;}
+.article p:last-child{margin-bottom:0;}
+
+.article-sub{font-size:14px;font-weight:500;color:var(--ink);margin:1.25rem 0 0.5rem;}
+
+.info-box{background:var(--primary-light);border-left:3px solid var(--primary);border-radius:0 var(--r-md) var(--r-md) 0;padding:1rem 1.25rem;margin:1rem 0;}
+.info-box p{color:var(--ink);font-size:13px;line-height:1.7;margin:0;}
+
+.warn-box{background:#FFF8EB;border-left:3px solid #F5C842;border-radius:0 var(--r-md) var(--r-md) 0;padding:1rem 1.25rem;margin:1rem 0;}
+.warn-box p{color:#5A4200;font-size:13px;line-height:1.7;margin:0;}
+
+.price-table{width:100%;border-collapse:collapse;margin:1rem 0;font-size:13px;}
+.price-table th{background:var(--bg2);color:var(--gray);font-weight:500;padding:0.625rem 1rem;text-align:left;border-bottom:0.5px solid var(--border);}
+.price-table td{padding:0.625rem 1rem;border-bottom:0.5px solid var(--border);color:var(--ink);}
+.price-table tr:last-child td{border-bottom:none;}
+.price-table .price{font-weight:500;color:var(--primary);}
+
+.contact-box{background:var(--bg2);border:0.5px solid var(--border);border-radius:var(--r-lg);padding:1.25rem 1.5rem;margin-top:1rem;}
+.contact-row{display:flex;gap:8px;font-size:13px;color:var(--gray);margin-bottom:6px;align-items:flex-start;}
+.contact-row:last-child{margin-bottom:0;}
+.contact-label{font-weight:500;color:var(--ink);min-width:100px;flex-shrink:0;}
+.contact-val{color:var(--gray);}
+
+.doc-footer{background:var(--bg2);border-top:0.5px solid var(--border);padding:1.25rem 3rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.doc-footer-text{font-size:12px;color:var(--gray-light);}
+.doc-footer-links{display:flex;gap:16px;}
+.doc-footer-links a{font-size:12px;color:var(--gray);text-decoration:none;transition:color 0.15s;}
+.doc-footer-links a:hover{color:var(--ink);}
+
+@media(max-width:640px){
+  .doc-header,.doc-body{padding:1.5rem 1.25rem;}
+  .doc-footer{padding:1rem 1.25rem;}
+  .price-table{font-size:12px;}
+  .price-table th,.price-table td{padding:0.5rem 0.625rem;}
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <nav>
+    <a class="nav-logo" href="/">Immersium<span>.</span></a>
+    <a class="nav-back" href="/">
+      <svg viewBox="0 0 16 16"><polyline points="10 4 6 8 10 12"/></svg>
+      Retour à l'accueil
+    </a>
+  </nav>
+
+  <div class="doc-wrap">
+
+    <div class="doc-header">
+      <div class="doc-eyebrow">Document contractuel</div>
+      <div class="doc-title">Conditions Générales de Vente</div>
+      <div class="doc-meta">
+        Version 1.0 — Entrée en vigueur le 1er janvier 2025<br>
+        Dernière mise à jour : janvier 2025
+      </div>
+    </div>
+
+    <div class="doc-body">
+
+      <!-- TABLE DES MATIÈRES -->
+      <div class="toc">
+        <div class="toc-title">Sommaire</div>
+        <div class="toc-list">
+          <div class="toc-item"><span class="toc-num">1.</span><a class="toc-link" href="#art1">Identification du vendeur</a></div>
+          <div class="toc-item"><span class="toc-num">2.</span><a class="toc-link" href="#art2">Champ d'application</a></div>
+          <div class="toc-item"><span class="toc-num">3.</span><a class="toc-link" href="#art3">Description des services</a></div>
+          <div class="toc-item"><span class="toc-num">4.</span><a class="toc-link" href="#art4">Tarifs et modalités de paiement</a></div>
+          <div class="toc-item"><span class="toc-num">5.</span><a class="toc-link" href="#art5">Abonnements et renouvellement</a></div>
+          <div class="toc-item"><span class="toc-num">6.</span><a class="toc-link" href="#art6">Droit de rétractation</a></div>
+          <div class="toc-item"><span class="toc-num">7.</span><a class="toc-link" href="#art7">Accès à la plateforme</a></div>
+          <div class="toc-item"><span class="toc-num">8.</span><a class="toc-link" href="#art8">Obligations de l'utilisateur</a></div>
+          <div class="toc-item"><span class="toc-num">9.</span><a class="toc-link" href="#art9">Propriété intellectuelle</a></div>
+          <div class="toc-item"><span class="toc-num">10.</span><a class="toc-link" href="#art10">Responsabilité</a></div>
+          <div class="toc-item"><span class="toc-num">11.</span><a class="toc-link" href="#art11">Données personnelles</a></div>
+          <div class="toc-item"><span class="toc-num">12.</span><a class="toc-link" href="#art12">Résiliation</a></div>
+          <div class="toc-item"><span class="toc-num">13.</span><a class="toc-link" href="#art13">Modifications des CGV</a></div>
+          <div class="toc-item"><span class="toc-num">14.</span><a class="toc-link" href="#art14">Droit applicable et litiges</a></div>
+          <div class="toc-item"><span class="toc-num">15.</span><a class="toc-link" href="#art15">Contact</a></div>
+        </div>
+      </div>
+
+      <div class="info-box">
+        <p>Les présentes Conditions Générales de Vente (CGV) régissent l'ensemble des ventes de services numériques réalisées via la plateforme Immersium accessible à l'adresse <strong>immersium.fr</strong>. Toute commande implique l'acceptation sans réserve des présentes CGV.</p>
+      </div>
+
+      <!-- ARTICLE 1 -->
+      <div class="article" id="art1">
+        <div class="article-header"><span class="article-num">1.</span><span class="article-title">Identification du vendeur</span></div>
+        <p>La plateforme Immersium est éditée et exploitée par :</p>
+        <div class="contact-box">
+          <div class="contact-row"><span class="contact-label">Nom commercial</span><span class="contact-val">Immersium</span></div>
+          <div class="contact-row"><span class="contact-label">Exploitant</span><span class="contact-val">Max Cosaque — Auto-entrepreneur</span></div>
+          <div class="contact-row"><span class="contact-label">Siège social</span><span class="contact-val">Guadeloupe (971), France</span></div>
+          <div class="contact-row"><span class="contact-label">Numéro SIRET</span><span class="contact-val">À compléter</span></div>
+          <div class="contact-row"><span class="contact-label">Code APE / NAF</span><span class="contact-val">À compléter</span></div>
+          <div class="contact-row"><span class="contact-label">Email</span><span class="contact-val">contact@immersium.fr</span></div>
+          <div class="contact-row"><span class="contact-label">Site web</span><span class="contact-val">https://immersium.fr</span></div>
+        </div>
+        <p style="margin-top:0.875rem;">En tant qu'auto-entrepreneur, Max Cosaque bénéficie de la franchise en base de TVA prévue à l'article 293 B du Code général des impôts. La TVA n'est donc pas applicable aux prestations facturées, sauf dépassement du seuil légal de franchise.</p>
+      </div>
+
+      <!-- ARTICLE 2 -->
+      <div class="article" id="art2">
+        <div class="article-header"><span class="article-num">2.</span><span class="article-title">Champ d'application</span></div>
+        <p>Les présentes CGV s'appliquent à toutes les ventes de services numériques conclues entre le vendeur et tout acheteur, ci-après désigné « l'Utilisateur » ou « le Client », qui accède aux services proposés sur la plateforme Immersium.</p>
+        <p>Elles s'appliquent indépendamment du profil de l'utilisateur : particulier, étudiant, professionnel, demandeur d'emploi, formateur indépendant, établissement de formation ou entreprise.</p>
+        <p>Le fait de passer commande sur Immersium implique l'adhésion entière et sans réserve aux présentes CGV, à l'exclusion de tout autre document. Les CGV en vigueur au moment de la commande sont celles applicables au contrat.</p>
+      </div>
+
+      <!-- ARTICLE 3 -->
+      <div class="article" id="art3">
+        <div class="article-header"><span class="article-num">3.</span><span class="article-title">Description des services</span></div>
+        <p>Immersium propose les services numériques suivants :</p>
+
+        <div class="article-sub">3.1 — Accès à la plateforme de simulation pédagogique</div>
+        <p>La plateforme Immersium permet à l'utilisateur de s'immerger dans des scénarios d'entreprises fictives afin de développer des compétences professionnelles dans les domaines du marketing digital, de la relation client, du commerce en ligne et de la communication professionnelle. L'accès comprend des simulations interactives organisées en défis progressifs.</p>
+
+        <div class="article-sub">3.2 — Accès découverte (gratuit)</div>
+        <p>Tout visiteur peut accéder gratuitement au premier défi de chaque simulation, sans création de compte obligatoire. Cet accès est limité et ne donne pas accès à l'ensemble du catalogue ni aux fonctionnalités de suivi de progression.</p>
+
+        <div class="article-sub">3.3 — Abonnements payants</div>
+        <p>L'accès complet à la plateforme est conditionné à la souscription d'un abonnement payant selon les formules décrites à l'article 4. Les abonnements donnent accès à l'intégralité du catalogue de simulations, au suivi de progression et aux attestations de complétion.</p>
+
+        <div class="article-sub">3.4 — Séances d'accompagnement individuel</div>
+        <p>Des séances d'accompagnement individuel sont proposées à la demande, en visioconférence ou en présentiel en Guadeloupe. Ces séances font l'objet d'une réservation préalable et d'un paiement distinct des abonnements à la plateforme.</p>
+
+        <div class="article-sub">3.5 — Licences établissement (B2B)</div>
+        <p>Des licences d'accès groupé sont proposées aux établissements de formation, centres de formation d'apprentis (CFA), entreprises et organismes de ressources humaines. Ces licences font l'objet d'un contrat spécifique et de conditions tarifaires négociées.</p>
+      </div>
+
+      <!-- ARTICLE 4 -->
+      <div class="article" id="art4">
+        <div class="article-header"><span class="article-num">4.</span><span class="article-title">Tarifs et modalités de paiement</span></div>
+
+        <div class="article-sub">4.1 — Tarifs en vigueur</div>
+        <p>Les prix sont indiqués en euros, toutes taxes comprises. En tant qu'auto-entrepreneur soumis à la franchise en base de TVA, les prix affichés sur la plateforme sont les prix définitifs. Le vendeur se réserve le droit de modifier ses tarifs à tout moment, sans que cela affecte les commandes déjà passées.</p>
+
+        <table class="price-table">
+          <thead>
+            <tr><th>Offre</th><th>Public</th><th>Tarif</th><th>Durée</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Découverte</td><td>Tous</td><td class="price">Gratuit</td><td>Illimité</td></tr>
+            <tr><td>Solo mensuel</td><td>Tous</td><td class="price">9,90 €/mois</td><td>Mensuel, renouvelable</td></tr>
+            <tr><td>Solo annuel</td><td>Tous</td><td class="price">79 €/an</td><td>Annuel, renouvelable</td></tr>
+            <tr><td>Solo réduit</td><td>Étudiants / demandeurs d'emploi</td><td class="price">4,90 €/mois</td><td>Mensuel, renouvelable</td></tr>
+            <tr><td>Accompagnement visio</td><td>Tous</td><td class="price">45 €/heure</td><td>À la séance</td></tr>
+            <tr><td>Accompagnement présentiel</td><td>Guadeloupe</td><td class="price">65 €/heure</td><td>À la séance</td></tr>
+            <tr><td>Pack Starter</td><td>Tous</td><td class="price">120 €</td><td>3h visio — valable 3 mois</td></tr>
+            <tr><td>Pack Booster</td><td>Tous</td><td class="price">200 €</td><td>5h visio — valable 3 mois</td></tr>
+            <tr><td>Pack Intensif</td><td>Tous</td><td class="price">350 €</td><td>5h présentiel + 3h visio — valable 3 mois</td></tr>
+            <tr><td>Licence CFA</td><td>Établissements</td><td class="price">À partir de 290 €/an</td><td>Annuel</td></tr>
+            <tr><td>Licence entreprise</td><td>Entreprises / RH</td><td class="price">À partir de 490 €/an</td><td>Annuel</td></tr>
+            <tr><td>Pack formateur</td><td>Formateurs indépendants</td><td class="price">149 €/an</td><td>Annuel</td></tr>
+          </tbody>
+        </table>
+
+        <div class="article-sub">4.2 — Moyens de paiement acceptés</div>
+        <p>Les paiements peuvent être effectués par les moyens suivants : carte bancaire (Visa, Mastercard, American Express, Maestro) via le prestataire Stripe, compte PayPal, virement bancaire sur présentation des coordonnées bancaires communiquées lors de la commande, et paiement mobile (Lydia, Paylib, Orange Money, Canal+ Money) selon disponibilité.</p>
+
+        <div class="article-sub">4.3 — Sécurité des paiements</div>
+        <p>Les paiements par carte bancaire sont traités par Stripe, prestataire de services de paiement certifié PCI-DSS. Les données bancaires de l'utilisateur ne transitent pas par les serveurs d'Immersium et ne sont jamais stockées par le vendeur.</p>
+
+        <div class="article-sub">4.4 — Paiement par virement</div>
+        <p>En cas de paiement par virement bancaire, l'accès aux services est activé uniquement après réception effective du paiement, dans un délai de 2 jours ouvrés à compter de la réception des fonds. Une référence de virement unique est communiquée à l'utilisateur lors de sa commande et doit obligatoirement figurer dans le libellé du virement.</p>
+      </div>
+
+      <!-- ARTICLE 5 -->
+      <div class="article" id="art5">
+        <div class="article-header"><span class="article-num">5.</span><span class="article-title">Abonnements et renouvellement</span></div>
+
+        <div class="article-sub">5.1 — Abonnements avec renouvellement automatique</div>
+        <p>Les abonnements Solo mensuel et Solo réduit sont des abonnements à reconduction tacite. Ils se renouvellent automatiquement à l'issue de chaque période mensuelle, sauf résiliation par l'utilisateur avant la date de renouvellement. Le montant correspondant est prélevé automatiquement sur le moyen de paiement enregistré.</p>
+
+        <div class="article-sub">5.2 — Abonnements sans renouvellement automatique</div>
+        <p>Les packs d'heures d'accompagnement (Starter, Booster, Intensif), les licences annuelles (CFA, entreprise, formateur) et le pack Solo annuel ne se renouvellent pas automatiquement. L'utilisateur ou l'établissement recevra une notification avant la date d'expiration pour lui permettre de renouveler son accès s'il le souhaite.</p>
+
+        <div class="article-sub">5.3 — Résiliation d'un abonnement à reconduction tacite</div>
+        <p>L'utilisateur peut résilier son abonnement à reconduction tacite à tout moment, depuis son espace personnel sur la plateforme, par email à contact@immersium.fr, ou via le lien de résiliation présent dans les emails de confirmation d'abonnement. La résiliation prend effet à la fin de la période en cours déjà payée. Aucun remboursement n'est effectué pour la période restante.</p>
+
+        <div class="warn-box">
+          <p><strong>Important :</strong> Pour éviter un prélèvement, la résiliation doit être effectuée au moins 24 heures avant la date de renouvellement. Passé ce délai, le prélèvement de la période suivante est dû et ne peut pas être remboursé.</p>
+        </div>
+
+        <div class="article-sub">5.4 — Modification du tarif en cours d'abonnement</div>
+        <p>En cas de modification tarifaire, l'utilisateur sera informé par email au moins 30 jours avant la prise d'effet de la modification. Il pourra résilier son abonnement sans frais avant l'entrée en vigueur du nouveau tarif. L'absence de résiliation dans ce délai vaut acceptation du nouveau tarif.</p>
+      </div>
+
+      <!-- ARTICLE 6 -->
+      <div class="article" id="art6">
+        <div class="article-header"><span class="article-num">6.</span><span class="article-title">Droit de rétractation</span></div>
+        <p>Conformément à l'article L.221-28 du Code de la consommation, le droit de rétractation ne peut pas être exercé pour les contenus numériques fournis sur un support immatériel dont l'exécution a commencé avec l'accord préalable du consommateur et renoncement exprès à son droit de rétractation.</p>
+        <p>Ainsi, dès lors que l'utilisateur a accédé aux simulations ou aux contenus de la plateforme après validation de sa commande, le droit de rétractation de 14 jours prévu par le droit de la consommation ne s'applique plus.</p>
+
+        <div class="info-box">
+          <p>Pour les abonnements dont l'exécution n'a pas encore débuté (aucune connexion effectuée à la plateforme), l'utilisateur dispose d'un délai de rétractation de <strong>14 jours calendaires</strong> à compter de la date de souscription, conformément à l'article L.221-18 du Code de la consommation. Pour exercer ce droit, l'utilisateur doit contacter le vendeur à l'adresse contact@immersium.fr.</p>
+        </div>
+
+        <p>Pour les séances d'accompagnement individuel, l'annulation est possible sans frais jusqu'à 24 heures avant la date convenue. En deçà de ce délai, la séance est due intégralement. Les heures de packs non utilisées sont reportables dans la limite de leur durée de validité (3 mois).</p>
+      </div>
+
+      <!-- ARTICLE 7 -->
+      <div class="article" id="art7">
+        <div class="article-header"><span class="article-num">7.</span><span class="article-title">Accès à la plateforme</span></div>
+
+        <div class="article-sub">7.1 — Création de compte</div>
+        <p>L'accès aux fonctionnalités payantes de la plateforme nécessite la création d'un compte utilisateur. L'utilisateur s'engage à fournir des informations exactes, complètes et à jour lors de son inscription. Il est seul responsable de la confidentialité de ses identifiants de connexion.</p>
+
+        <div class="article-sub">7.2 — Disponibilité du service</div>
+        <p>Le vendeur s'efforce d'assurer la disponibilité de la plateforme 24h/24, 7j/7. Toutefois, des interruptions peuvent survenir pour des opérations de maintenance, des mises à jour ou en cas de circonstances indépendantes de la volonté du vendeur. Ces interruptions ne donnent pas droit à remboursement sauf si elles dépassent 72 heures consécutives hors cas de force majeure.</p>
+
+        <div class="article-sub">7.3 — Accès multi-appareils</div>
+        <p>Chaque compte utilisateur est strictement personnel et ne peut être partagé entre plusieurs personnes. L'utilisation d'un même compte par plusieurs utilisateurs est interdite et peut entraîner la résiliation du compte sans remboursement.</p>
+      </div>
+
+      <!-- ARTICLE 8 -->
+      <div class="article" id="art8">
+        <div class="article-header"><span class="article-num">8.</span><span class="article-title">Obligations de l'utilisateur</span></div>
+        <p>En accédant aux services d'Immersium, l'utilisateur s'engage à :</p>
+        <p>— Utiliser la plateforme à des fins licites et conformes à sa destination pédagogique ;</p>
+        <p>— Ne pas tenter de contourner les mesures de protection technique de la plateforme ;</p>
+        <p>— Ne pas reproduire, copier, vendre ou exploiter commercialement tout ou partie des contenus sans autorisation écrite préalable du vendeur ;</p>
+        <p>— Ne pas utiliser de robots, scripts ou tout autre moyen automatisé pour accéder à la plateforme ;</p>
+        <p>— Ne pas partager ses identifiants de connexion avec des tiers ;</p>
+        <p>— Signaler au vendeur toute anomalie, faille de sécurité ou utilisation frauduleuse de son compte dès qu'il en a connaissance.</p>
+        <p>Tout manquement à ces obligations peut entraîner la suspension ou la résiliation immédiate du compte, sans préavis ni remboursement.</p>
+      </div>
+
+      <!-- ARTICLE 9 -->
+      <div class="article" id="art9">
+        <div class="article-header"><span class="article-num">9.</span><span class="article-title">Propriété intellectuelle</span></div>
+        <p>L'ensemble des contenus présents sur la plateforme Immersium — scénarios pédagogiques, entreprises fictives, textes, questions, interfaces, logos, graphismes, codes source — sont la propriété exclusive de Max Cosaque et sont protégés par les dispositions du Code de la propriété intellectuelle.</p>
+        <p>L'utilisateur bénéficie d'un droit d'usage personnel, non exclusif, non cessible et non transférable, pour la durée de son abonnement ou de son accès. Ce droit ne comprend aucune autorisation de reproduction, de distribution, de modification ou d'exploitation commerciale des contenus.</p>
+        <p>Toute reproduction partielle ou totale des contenus de la plateforme, à des fins commerciales ou non, sans autorisation écrite préalable du vendeur est strictement interdite et susceptible de constituer une contrefaçon au sens des articles L.335-2 et suivants du Code de la propriété intellectuelle.</p>
+      </div>
+
+      <!-- ARTICLE 10 -->
+      <div class="article" id="art10">
+        <div class="article-header"><span class="article-num">10.</span><span class="article-title">Responsabilité</span></div>
+
+        <div class="article-sub">10.1 — Responsabilité du vendeur</div>
+        <p>Le vendeur s'engage à fournir les services décrits avec le soin et la compétence requis. Toutefois, les contenus pédagogiques d'Immersium sont fournis à titre de simulations éducatives et ne constituent pas un conseil professionnel, juridique ou commercial. Le vendeur ne saurait être tenu responsable des décisions professionnelles prises par l'utilisateur sur la base des contenus de la plateforme.</p>
+        <p>La responsabilité du vendeur ne peut être engagée en cas de force majeure, de défaillance du réseau internet, de problèmes techniques liés au matériel ou au navigateur de l'utilisateur, ou d'utilisation non conforme de la plateforme.</p>
+
+        <div class="article-sub">10.2 — Responsabilité de l'utilisateur</div>
+        <p>L'utilisateur est seul responsable de l'utilisation qu'il fait de la plateforme et des informations qu'il y renseigne. Il garantit l'exactitude des informations fournies lors de son inscription, notamment pour les offres à tarif réduit nécessitant un justificatif.</p>
+      </div>
+
+      <!-- ARTICLE 11 -->
+      <div class="article" id="art11">
+        <div class="article-header"><span class="article-num">11.</span><span class="article-title">Données personnelles</span></div>
+        <p>Les données personnelles collectées dans le cadre de l'utilisation de la plateforme (nom, adresse email, données de progression, informations de facturation) sont traitées conformément au Règlement Général sur la Protection des Données (RGPD) et à la loi Informatique et Libertés.</p>
+        <p>Ces données sont utilisées exclusivement aux fins suivantes : gestion du compte utilisateur, suivi pédagogique, facturation, et amélioration de la plateforme. Elles ne sont jamais revendues à des tiers.</p>
+        <p>Conformément au RGPD, l'utilisateur dispose des droits d'accès, de rectification, d'effacement, de portabilité et d'opposition concernant ses données personnelles. Pour exercer ces droits, il peut contacter le vendeur à l'adresse : contact@immersium.fr. Pour toute réclamation relative au traitement de ses données, l'utilisateur peut saisir la Commission Nationale de l'Informatique et des Libertés (CNIL) à l'adresse www.cnil.fr.</p>
+        <p>Les données de facturation sont conservées pendant une durée de 10 ans conformément aux obligations légales comptables. Les données de compte sont conservées pendant la durée de l'abonnement, puis supprimées dans un délai de 30 jours suivant la résiliation du compte, sauf obligation légale de conservation.</p>
+      </div>
+
+      <!-- ARTICLE 12 -->
+      <div class="article" id="art12">
+        <div class="article-header"><span class="article-num">12.</span><span class="article-title">Résiliation</span></div>
+
+        <div class="article-sub">12.1 — Résiliation à l'initiative de l'utilisateur</div>
+        <p>L'utilisateur peut résilier son compte et ses abonnements à tout moment en adressant une demande à contact@immersium.fr ou en utilisant les outils de gestion disponibles dans son espace personnel. La résiliation prend effet à l'issue de la période en cours déjà payée.</p>
+
+        <div class="article-sub">12.2 — Résiliation à l'initiative du vendeur</div>
+        <p>Le vendeur se réserve le droit de suspendre ou de résilier l'accès d'un utilisateur en cas de manquement grave aux présentes CGV, d'utilisation frauduleuse de la plateforme, de non-paiement ou de comportement susceptible de nuire à la plateforme ou à ses utilisateurs. La résiliation prend effet immédiatement, sans préavis ni remboursement de la période en cours.</p>
+
+        <div class="article-sub">12.3 — Effets de la résiliation</div>
+        <p>À compter de la résiliation, l'utilisateur perd l'accès à l'ensemble des contenus et fonctionnalités payantes de la plateforme. Ses données de progression sont conservées pendant 30 jours, puis définitivement supprimées, sauf demande expresse de leur conservation dans le cadre d'une obligation légale.</p>
+      </div>
+
+      <!-- ARTICLE 13 -->
+      <div class="article" id="art13">
+        <div class="article-header"><span class="article-num">13.</span><span class="article-title">Modifications des CGV</span></div>
+        <p>Le vendeur se réserve le droit de modifier les présentes CGV à tout moment pour les adapter aux évolutions de la plateforme, à la réglementation applicable ou à ses pratiques commerciales.</p>
+        <p>Les utilisateurs disposant d'un compte seront informés de toute modification substantielle par email, avec un préavis d'au moins 30 jours avant l'entrée en vigueur des nouvelles conditions. La poursuite de l'utilisation de la plateforme après cette date vaut acceptation des CGV modifiées.</p>
+        <p>Les CGV applicables à une commande sont celles en vigueur au jour de la commande.</p>
+      </div>
+
+      <!-- ARTICLE 14 -->
+      <div class="article" id="art14">
+        <div class="article-header"><span class="article-num">14.</span><span class="article-title">Droit applicable et litiges</span></div>
+        <p>Les présentes CGV sont soumises au droit français. En cas de litige relatif à leur interprétation ou à leur exécution, les parties s'engagent à rechercher une solution amiable avant tout recours judiciaire.</p>
+        <p>En cas d'échec de la tentative de règlement amiable, tout litige relatif aux présentes CGV sera soumis à la compétence exclusive des tribunaux du ressort de la Cour d'appel de Basse-Terre (Guadeloupe), sauf disposition légale impérative contraire.</p>
+        <p>Conformément aux articles L.611-1 et suivants du Code de la consommation, les consommateurs ont la possibilité de recourir gratuitement au service de médiation de la consommation. Le vendeur s'engage à informer les utilisateurs du médiateur compétent dans les conditions prévues par la loi.</p>
+
+        <div class="info-box">
+          <p>La Commission européenne met à disposition une plateforme de règlement en ligne des litiges accessible à l'adresse : <strong>https://ec.europa.eu/consumers/odr</strong>. Cette plateforme peut être utilisée par tout consommateur européen pour résoudre un litige relatif à un achat en ligne.</p>
+        </div>
+      </div>
+
+      <!-- ARTICLE 15 -->
+      <div class="article" id="art15">
+        <div class="article-header"><span class="article-num">15.</span><span class="article-title">Contact</span></div>
+        <p>Pour toute question relative aux présentes CGV, pour exercer vos droits ou pour toute réclamation, vous pouvez contacter le vendeur aux coordonnées suivantes :</p>
+        <div class="contact-box">
+          <div class="contact-row"><span class="contact-label">Email</span><span class="contact-val">contact@immersium.fr</span></div>
+          <div class="contact-row"><span class="contact-label">Site web</span><span class="contact-val">https://immersium.fr</span></div>
+          <div class="contact-row"><span class="contact-label">Adresse</span><span class="contact-val">Guadeloupe (971), France</span></div>
+          <div class="contact-row"><span class="contact-label">Délai de réponse</span><span class="contact-val">Sous 48 heures ouvrées</span></div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="doc-footer">
+      <div class="doc-footer-text">© 2025 Immersium — Max Cosaque — Tous droits réservés</div>
+      <div class="doc-footer-links">
+        <a href="/">Accueil</a>
+        <a href="/mentions-legales">Mentions légales</a>
+        <a href="/politique-confidentialite">Politique de confidentialité</a>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+</body>
+</html>
