@@ -65,8 +65,12 @@ exports.handler = async function (event) {
         competency_id: game.competency_id || null,
         sessions: game.sessions || [],
         sort_order: game.sort_order || 0,
+        challenges_data: game.challengesData || game.challenges_data || null,
         updated_at: new Date().toISOString()
       };
+
+      // Ne pas inclure challenges_data si null (colonne peut ne pas exister)
+      if (!payload.challenges_data) delete payload.challenges_data;
 
       const { data, error } = await sb
         .from("games")
@@ -170,8 +174,11 @@ exports.handler = async function (event) {
         duration_per_challenge: game.durationPerChallenge || "1h",
         difficulty: game.diff || game.difficulty || "Tous niveaux",
         sessions: game.sessions || [],
+        challenges_data: game.challengesData || game.challenges_data || null,
         updated_at: new Date().toISOString()
       };
+
+      if (!payload.challenges_data) delete payload.challenges_data;
 
       const { data, error } = await sb
         .from("games")
