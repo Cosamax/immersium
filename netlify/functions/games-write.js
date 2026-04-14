@@ -19,8 +19,8 @@ exports.handler = async function (event) {
   if (event.httpMethod !== "POST") return { statusCode: 405, headers, body: JSON.stringify({ error: "Method not allowed" }) };
 
   const sb = createClient(
-    process.env.SUPABASE_URL,
-    process.env.SUPABASE_KEY
+    process.env.SUPABASE_DATABASE_URL,
+    process.env.SUPABASE_SERVICE_ROLE_KEY
   );
 
   let body;

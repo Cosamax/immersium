@@ -16,8 +16,8 @@ exports.handler = async function (event) {
   if (event.httpMethod === "OPTIONS") return { statusCode: 200, headers, body: "" };
 
   const sb = createClient(
-    process.env.SUPABASE_URL,
-    process.env.SUPABASE_KEY
+    process.env.SUPABASE_DATABASE_URL,
+    process.env.SUPABASE_SERVICE_ROLE_KEY
   );
 
   const params = event.queryStringParameters || {};
