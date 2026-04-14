@@ -106,7 +106,7 @@ exports.handler = async function (event) {
 
       const payload = {
         id: comp.id,
-        label: comp.label || "",
+        name: comp.name || comp.label || "",
         description: comp.description || "",
         color: comp.color || "#024AFF",
         icon: comp.icon || "",
