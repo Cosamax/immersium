@@ -110,8 +110,7 @@ exports.handler = async function (event) {
         description: comp.description || "",
         color: comp.color || "#024AFF",
         icon: comp.icon || "",
-        sort_order: comp.sort_order || 0,
-        updated_at: new Date().toISOString()
+        sort_order: comp.sort_order || 0
       };
 
       const { data, error } = await sb
