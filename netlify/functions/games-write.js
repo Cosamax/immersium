@@ -50,7 +50,7 @@ exports.handler = async function (event) {
       const payload = {
         id: game.id,
         title: game.title || "",
-        sub: game.sub || game.subtitle || "",
+        subtitle: game.sub || game.subtitle || "",
         description: game.description || game.desc || "",
         color: game.color || "#7C3AED",
         bg: game.bg || "rgba(124,58,237,.08)",
@@ -62,12 +62,8 @@ exports.handler = async function (event) {
         total_questions: game.totalQuestions || game.total_questions || 63,
         duration_per_challenge: game.durationPerChallenge || game.duration_per_challenge || "1h",
         difficulty: game.diff || game.difficulty || "Tous niveaux",
-        domain: game.domain || "",
-        competency: game.competency || "",
         competency_id: game.competency_id || null,
         sessions: game.sessions || [],
-        challenges_data: game.challengesData || game.challenges_data || [],
-        hero: game.hero || "",
         sort_order: game.sort_order || 0,
         updated_at: new Date().toISOString()
       };
@@ -162,7 +158,7 @@ exports.handler = async function (event) {
       const payload = {
         id: game.id,
         title: game.title || "",
-        sub: game.sub || "",
+        subtitle: game.sub || game.subtitle || "",
         description: game.description || "",
         color: game.color || "#7C3AED",
         bg: game.bg || "rgba(124,58,237,.08)",
@@ -174,10 +170,7 @@ exports.handler = async function (event) {
         total_questions: game.totalQuestions || 63,
         duration_per_challenge: game.durationPerChallenge || "1h",
         difficulty: game.diff || game.difficulty || "Tous niveaux",
-        domain: game.domain || "",
-        competency: game.competency || "",
         sessions: game.sessions || [],
-        challenges_data: game.challengesData || [],
         updated_at: new Date().toISOString()
       };
 
