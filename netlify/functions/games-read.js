@@ -40,10 +40,28 @@ exports.handler = async function (event) {
       const { data, error } = await sb
         .from("competencies")
         .select("*")
-        .order("sort_order", { ascending: true });
+        .order("name", { ascending: true });
+
+      if (error) {
+        // Si la table n'existe pas encore, retourner un tableau vide
+        if (err.message.includes("competencies")) {
+          return { statusCode: 200, headers, body: JSON.stringify([]) };
+        }
+        throw error;
+      }
+      return { statusCode: 200, headers, body: JSON.stringify(data || []) };
+    }
+
+    // ── Lecture des colonnes disponibles pour diagnostic ──
+    if (params.type === "schema") {
+      const { data, error } = await sb
+        .from("games")
+        .select("*")
+        .limit(1);
 
       if (error) throw error;
-      return { statusCode: 200, headers, body: JSON.stringify(data || []) };
+      const columns = data && data.length > 0 ? Object.keys(data[0]) : [];
+      return { statusCode: 200, headers, body: JSON.stringify({ columns, sample: data }) };
     }
 
     // ── Liste complète des jeux (avec filtres optionnels) ──
@@ -64,8 +82,8 @@ exports.handler = async function (event) {
       query = query.eq("published", params.published === "true");
     }
 
-    // Tri par ordre de tri puis par titre
-    query = query.order("sort_order", { ascending: true }).order("title", { ascending: true });
+    // Tri par titre (compatible avec toutes les structures de table)
+    query = query.order("title", { ascending: true });
 
     const { data, error } = await query;
     if (error) throw error;
