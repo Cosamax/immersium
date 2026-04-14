@@ -6624,6 +6624,60 @@ body.game-fullscreen #global-nav { display: none; }
       </div>
 
       <!-- ═══════════════════════════════════════
+           PANNEAU: COMPÉTENCES (admin)
+           ═══════════════════════════════════════ -->
+      <div class="ds-panel" id="dsp-competencies">
+        <div class="ds-section">
+          <div class="ds-section-hd">
+            <span class="ds-section-title">Gestion des compétences</span>
+            <button class="ds-btn primary" onclick="window.dsShowCreateCompetency()">+ Nouvelle compétence</button>
+          </div>
+          <div class="ds-section-body">
+            <div class="ds-alert info">Les compétences permettent de regrouper vos jeux par catégorie (ex: Marketing Digital, Communication, IA Générative). Chaque jeu est associé à une compétence et à un niveau de difficulté.</div>
+            <div id="ds-competencies-list" style="margin-top:14px">
+              <p style="color:#888;font-size:.8rem">Chargement des compétences...</p>
+            </div>
+          </div>
+        </div>
+        <!-- Formulaire de création/édition de compétence -->
+        <div id="ds-competency-form" style="display:none;margin-top:18px">
+          <div class="ds-section">
+            <div class="ds-section-hd">
+              <span class="ds-section-title" id="ds-comp-form-title">Nouvelle compétence</span>
+              <button class="ds-btn secondary" onclick="document.getElementById('ds-competency-form').style.display='none'">Annuler</button>
+            </div>
+            <div class="ds-section-body">
+              <input type="hidden" id="ds-comp-edit-id" value=""/>
+              <div style="margin-bottom:12px">
+                <label class="ds-label">Identifiant unique (ex: marketing-digital)</label>
+                <input class="ds-input" id="ds-comp-id" placeholder="marketing-digital" style="width:100%"/>
+              </div>
+              <div style="margin-bottom:12px">
+                <label class="ds-label">Nom affiché</label>
+                <input class="ds-input" id="ds-comp-label" placeholder="Marketing Digital" style="width:100%"/>
+              </div>
+              <div style="margin-bottom:12px">
+                <label class="ds-label">Description</label>
+                <textarea class="ds-input" id="ds-comp-desc" rows="3" placeholder="Description de la compétence..." style="width:100%;resize:vertical"></textarea>
+              </div>
+              <div style="display:flex;gap:12px;margin-bottom:12px">
+                <div style="flex:1">
+                  <label class="ds-label">Couleur</label>
+                  <input type="color" class="ds-input" id="ds-comp-color" value="#024AFF" style="width:100%;height:40px"/>
+                </div>
+                <div style="flex:1">
+                  <label class="ds-label">Ordre d'affichage</label>
+                  <input type="number" class="ds-input" id="ds-comp-order" value="0" min="0" style="width:100%"/>
+                </div>
+              </div>
+              <button class="ds-btn primary" onclick="window.dsSaveCompetency()" style="width:100%">Enregistrer la compétence</button>
+              <div id="ds-comp-status" style="margin-top:12px;display:none"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════
            PANNEAU: PAGE D'ACCUEIL / SLIDER (admin)
            ═══════════════════════════════════════ -->
       <div class="ds-panel" id="dsp-homepage">
@@ -9607,6 +9661,71 @@ var SOLARIS_CH_INFO = {"solaris_1": {"session": 1, "title": "Qu'est-ce que l'IA 
 var AURORA_CH_INFO = {"aurora_1": {"session": 1, "title": "Qu'est-ce que le parcours client physique ?", "nextId": 2}, "aurora_2": {"session": 1, "title": "Cartographier son parcours", "nextId": 3}, "aurora_3": {"session": 1, "title": "Inventaire des points de contact", "nextId": 4}, "aurora_4": {"session": 1, "title": "L'avant-visite", "nextId": 5}, "aurora_5": {"session": 1, "title": "Le seuil et la zone d'entree", "nextId": 6}, "aurora_6": {"session": 1, "title": "Orientation et circulation", "nextId": 7}, "aurora_7": {"session": 1, "title": "L'espace d'attente", "nextId": 8}, "aurora_8": {"session": 2, "title": "L'interaction humaine", "nextId": 9}, "aurora_9": {"session": 2, "title": "L'environnement sensoriel", "nextId": 10}, "aurora_10": {"session": 2, "title": "La signalétique", "nextId": 11}, "aurora_11": {"session": 2, "title": "Les moments de verite", "nextId": 12}, "aurora_12": {"session": 2, "title": "Les points de douleur", "nextId": 13}, "aurora_13": {"session": 2, "title": "La sortie et l'apres-visite", "nextId": 14}, "aurora_14": {"session": 2, "title": "Les situations degradees", "nextId": 15}, "aurora_15": {"session": 3, "title": "L'accessibilite universelle", "nextId": 16}, "aurora_16": {"session": 3, "title": "Le parcours phygital", "nextId": 17}, "aurora_17": {"session": 3, "title": "Mesurer et piloter", "nextId": 18}, "aurora_18": {"session": 3, "title": "Former les equipes", "nextId": 19}, "aurora_19": {"session": 3, "title": "Concevoir et renover", "nextId": 20}, "aurora_20": {"session": 3, "title": "Culture durable", "nextId": 21}, "aurora_21": {"session": 3, "title": "MISSION FINALE", "nextId": null}};
 
 var EDEN_CH_INFO = {"eden_1": {"session": 1, "title": "Qu'est-ce que l'excellence de l'accueil ?", "nextId": 2}, "eden_2": {"session": 1, "title": "Diagnostiquer son niveau", "nextId": 3}, "eden_3": {"session": 1, "title": "Connaitre ses visiteurs", "nextId": 4}, "eden_4": {"session": 1, "title": "Fondamentaux de la communication", "nextId": 5}, "eden_5": {"session": 1, "title": "Accueil physique et espace", "nextId": 6}, "eden_6": {"session": 1, "title": "Accueil telephonique", "nextId": 7}, "eden_7": {"session": 1, "title": "Accueil digital", "nextId": 8}, "eden_8": {"session": 2, "title": "Situations difficiles", "nextId": 9}, "eden_9": {"session": 2, "title": "Accueil inclusif", "nextId": 10}, "eden_10": {"session": 2, "title": "Former les equipes", "nextId": 11}, "eden_11": {"session": 2, "title": "Mesurer et piloter", "nextId": 12}, "eden_12": {"session": 2, "title": "Management des équipes", "nextId": 13}, "eden_13": {"session": 2, "title": "Culture durable", "nextId": 14}, "eden_14": {"session": 2, "title": "Crise et intelligence artificielle", "nextId": 15}, "eden_15": {"session": 3, "title": "Le sourire professionnel", "nextId": 16}, "eden_16": {"session": 3, "title": "Multicanal et marque employeur", "nextId": 17}, "eden_17": {"session": 3, "title": "MISSION FINALE", "nextId": 18}, "eden_18": {"session": 3, "title": "Coherence omnicanale", "nextId": 19}, "eden_19": {"session": 3, "title": "Secteurs specifiques", "nextId": 20}, "eden_20": {"session": 3, "title": "Signalétique et design", "nextId": 21}, "eden_21": {"session": 3, "title": "MISSION FINALE — Bilan", "nextId": null}};
+
+// ═══════════════════════════════════════════════════════════
+// REGISTRE UNIFIÉ CH_INFO_MAP — Permet au moteur de jeu de fonctionner
+// avec n'importe quel jeu (statique ou dynamique) sans if/else
+// ═══════════════════════════════════════════════════════════
+var CH_INFO_MAP = {
+  "lumero": CH_INFO,
+  "lumio": LUMIO_CH_INFO,
+  "signal": SIGNAL_CH_INFO,
+  "strat": STRAT_CH_INFO,
+  "nexio": NEXIO_CH_INFO,
+  "solaris": SOLARIS_CH_INFO,
+  "aurora": AURORA_CH_INFO,
+  "eden": EDEN_CH_INFO
+};
+window.CH_INFO_MAP = CH_INFO_MAP;
+
+// Fonction générique : retourne la map CH_INFO pour n'importe quel jeu
+function getChInfoMap(gameId) {
+  if (CH_INFO_MAP[gameId]) return CH_INFO_MAP[gameId];
+  // Pour les jeux dynamiques (Supabase), construire la map à la volée depuis GAMES
+  var game = GAMES.find(function(g) { return g.id === gameId; });
+  if (game && game.sessions) {
+    var map = {};
+    var chNum = 0;
+    game.sessions.forEach(function(sess) {
+      var challenges = sess.challenges || [];
+      challenges.forEach(function(ch, idx) {
+        chNum++;
+        var nextNum = chNum < (game.challenges || 21) ? chNum + 1 : null;
+        var key = gameId + "_" + chNum;
+        map[key] = {
+          session: sess.id,
+          sessionTitle: sess.title || ("Session " + sess.id),
+          chIndex: idx + 1,
+          totalInSession: challenges.length,
+          title: ch.title || ("Challenge " + chNum),
+          nextId: nextNum,
+          nextTitle: null,
+          gameId: gameId
+        };
+      });
+    });
+    // Remplir les nextTitle
+    for (var k in map) {
+      if (map[k].nextId) {
+        var nk = gameId + "_" + map[k].nextId;
+        if (map[nk]) map[k].nextTitle = map[nk].title;
+      }
+    }
+    CH_INFO_MAP[gameId] = map;
+    return map;
+  }
+  return {};
+}
+window.getChInfoMap = getChInfoMap;
+
+// Fonction générique : retourne la clé CH_INFO pour un jeu et un numéro de challenge
+function getChInfoKey(gameId, chNum) {
+  if (gameId === "lumero") return String(chNum);
+  return gameId + "_" + chNum;
+}
+window.getChInfoKey = getChInfoKey;
+
+
 var CHS = JSON.parse(document.getElementById("cd").textContent);
 var ua = [], af = "all", GST = {};
 
@@ -9688,46 +9807,123 @@ function showErr(m) {
 }
 
 function loadCatalog() {
- // Load from Supabase and merge with static games
- fetch("/.netlify/functions/games-read")
- .then(function(r) { return r.json(); })
- .then(function(remote) {
- if (remote && remote.length) {
- var staticIds = GAMES.map(function(g) { return g.id; });
- remote.forEach(function(g) {
- if (staticIds.indexOf(g.id) < 0 && g.published) {
- // Build a catalog entry from Supabase game
- var entry = {
- id: g.id,
- title: g.title || g.id,
- sub: g.sub || "",
- desc: g.description || "",
- color: g.color || "#7C3AED",
- bg: g.bg || "rgba(124,58,237,.08)",
- pub: true,
- price: g.price || "49 €",
- skills: g.skills || [],
- challenges: g.challenges || 21,
- questionsPerChallenge: g.questionsPerChallenge || 3,
- totalQuestions: g.totalQuestions || 63,
- durationPerChallenge: g.durationPerChallenge || "1h",
- diff: g.diff || "Tous niveaux",
- isNew: true,
- sessions: g.sessions || []
- };
- GAMES.push(entry);
- ua.push(g.id);
- }
- });
- }
- })
- .then(function() {
- renderCat("all", "");
- })
- .catch(function() {
- renderCat("all", "");
- });
+ // ═══ CHARGEMENT DYNAMIQUE — Supabase + jeux statiques (fallback) ═══
+ // 1. Charger les compétences
+ var competenciesPromise = fetch("/.netlify/functions/games-read?type=competencies")
+   .then(function(r) { return r.json(); })
+   .then(function(comps) {
+     window.COMPETENCIES = comps || [];
+     // Générer les filtres du catalogue dynamiquement
+     updateCatalogFilters(comps);
+   })
+   .catch(function() { window.COMPETENCIES = []; });
+
+ // 2. Charger les jeux depuis Supabase et fusionner avec les statiques
+ var gamesPromise = fetch("/.netlify/functions/games-read")
+   .then(function(r) { return r.json(); })
+   .then(function(remote) {
+     if (remote && remote.length) {
+       var staticIds = GAMES.map(function(g) { return g.id; });
+       remote.forEach(function(g) {
+         var existingIdx = staticIds.indexOf(g.id);
+         if (existingIdx >= 0) {
+           // Mettre à jour le jeu statique avec les données Supabase (si plus récentes)
+           if (g.competency_id) GAMES[existingIdx].competency_id = g.competency_id;
+           if (g.difficulty) GAMES[existingIdx].diff = g.difficulty;
+           if (g.sort_order) GAMES[existingIdx].sort_order = g.sort_order;
+         } else if (g.published) {
+           // Nouveau jeu Supabase — ajouter au catalogue
+           var entry = {
+             id: g.id,
+             title: g.title || g.id,
+             sub: g.sub || "",
+             desc: g.description || "",
+             color: g.color || "#7C3AED",
+             bg: g.bg || "rgba(124,58,237,.08)",
+             pub: true,
+             price: g.price || "49 €",
+             skills: g.skills || [],
+             challenges: g.challenges || 21,
+             questionsPerChallenge: g.questions_per_challenge || 3,
+             totalQuestions: g.total_questions || 63,
+             durationPerChallenge: g.duration_per_challenge || "1h",
+             diff: g.difficulty || "Tous niveaux",
+             isNew: true,
+             sessions: g.sessions || [],
+             domain: g.domain || "",
+             competency: g.competency || "",
+             competency_id: g.competency_id || null,
+             hero: g.hero || "",
+             sort_order: g.sort_order || 99,
+             _fromSupabase: true
+           };
+           GAMES.push(entry);
+           ua.push(g.id);
+           // Enregistrer les challenges dans CHS si disponibles
+           if (g.challenges_data && g.challenges_data.length) {
+             g.challenges_data.forEach(function(ch) {
+               var chKey = g.id + "_ch" + ch.challenge_num;
+               if (!CHS[chKey]) CHS[chKey] = ch.questions || [];
+             });
+           }
+           // Construire la CH_INFO_MAP pour ce jeu
+           getChInfoMap(g.id);
+         }
+       });
+     }
+   })
+   .catch(function(e) { console.warn("Erreur chargement Supabase:", e); });
+
+ // 3. Attendre les deux chargements puis afficher
+ Promise.all([competenciesPromise, gamesPromise])
+   .then(function() { renderCat("all", ""); })
+   .catch(function() { renderCat("all", ""); });
 }
+
+// ═══ Mise à jour dynamique des filtres du catalogue ═══
+function updateCatalogFilters(competencies) {
+  var filterBar = document.querySelector('.cat-filters');
+  if (!filterBar || !competencies || !competencies.length) return;
+  // Garder le bouton "Toutes" existant
+  var allBtn = filterBar.querySelector('.cat-filter.active') || filterBar.querySelector('.cat-filter');
+  filterBar.innerHTML = '';
+  if (allBtn) {
+    var newAll = document.createElement('button');
+    newAll.className = 'cat-filter active';
+    newAll.textContent = 'Toutes';
+    newAll.onclick = function() { filterCatalog(newAll, 'all'); };
+    filterBar.appendChild(newAll);
+  }
+  // Ajouter un filtre par compétence
+  competencies.forEach(function(comp) {
+    var btn = document.createElement('button');
+    btn.className = 'cat-filter';
+    btn.textContent = comp.label || comp.id;
+    btn.onclick = function() { filterCatalog(btn, comp.id); };
+    filterBar.appendChild(btn);
+  });
+  // Ajouter les filtres par niveau
+  ['Débutant', 'Intermédiaire', 'Avancé'].forEach(function(level) {
+    var btn = document.createElement('button');
+    btn.className = 'cat-filter';
+    btn.style.borderLeft = '2px solid rgba(255,255,255,.1)';
+    btn.textContent = level;
+    btn.onclick = function() { filterCatalogByLevel(btn, level); };
+    filterBar.appendChild(btn);
+  });
+}
+window.updateCatalogFilters = updateCatalogFilters;
+
+// Filtre par niveau de difficulté
+function filterCatalogByLevel(btn, level) {
+  document.querySelectorAll('.cat-filter').forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+  af = 'level_' + level;
+  catPage = 1;
+  var q = document.getElementById('cat-search-input');
+  renderCat('level_' + level, q ? q.value : '');
+}
+window.filterCatalogByLevel = filterCatalogByLevel;
 
 function loginUser(name, email, _skipNav) {
  ua = GAMES.filter(function(g) { return g.pub; }).map(function(g) { return g.id; });
@@ -10369,10 +10565,21 @@ function renderCat(domain, query) {
   list.innerHTML = '';
 
   var filtered = GAMES.filter(function(g) {
-    if (domain && domain !== 'all' && g.domain !== domain) return false;
+    // Filtrage par compétence (competency_id) ou par domaine (legacy)
+    if (domain && domain !== 'all') {
+      if (domain.indexOf('level_') === 0) {
+        // Filtre par niveau
+        var targetLevel = domain.replace('level_', '');
+        if ((g.diff || '').toLowerCase() !== targetLevel.toLowerCase()) return false;
+      } else if (g.competency_id && g.competency_id !== domain && g.domain !== domain) {
+        return false;
+      } else if (!g.competency_id && g.domain !== domain) {
+        return false;
+      }
+    }
     if (query && query.length > 0) {
       var q = query.toLowerCase();
-      var hay = ((g.competency || '') + ' ' + (g.title || '') + ' ' + (g.sub || '') + ' ' + (g.skills || []).join(' ') + ' ' + (g.desc || '')).toLowerCase();
+      var hay = ((g.competency || '') + ' ' + (g.title || '') + ' ' + (g.sub || '') + ' ' + (g.skills || []).join(' ') + ' ' + (g.desc || '') + ' ' + (g.diff || '')).toLowerCase();
       if (hay.indexOf(q) < 0) return false;
     }
     return true;
@@ -10490,7 +10697,15 @@ function searchCatalog(val) {
 
 
 // ── GAME OVERLAY ──
-var ovMap = { lumero: { ov: "gl", mg: "lg" }, lumio: { ov: "gl", mg: "lg" }, signal: { ov: "gl", mg: "lg" }, strat: { ov: "gl", mg: "lg" }, nexio: { ov: "gl", mg: "lg" }, solaris: { ov: "gl", mg: "lg" }, aurora: { ov: "gl", mg: "lg" }, eden: { ov: "gl", mg: "lg" } };
+// ovMap dynamique — accepte n'importe quel jeu (statique ou Supabase)
+var _ovMapStatic = { lumero: { ov: "gl", mg: "lg" }, lumio: { ov: "gl", mg: "lg" }, signal: { ov: "gl", mg: "lg" }, strat: { ov: "gl", mg: "lg" }, nexio: { ov: "gl", mg: "lg" }, solaris: { ov: "gl", mg: "lg" }, aurora: { ov: "gl", mg: "lg" }, eden: { ov: "gl", mg: "lg" } };
+var ovMap = new Proxy(_ovMapStatic, {
+  get: function(target, prop) {
+    if (prop in target) return target[prop];
+    // Pour tout nouveau jeu, utiliser le même overlay générique
+    return { ov: "gl", mg: "lg" };
+  }
+});
 var CH_INFO = {"1": {"session": 1, "sessionTitle": "Prends les rênes", "chIndex": 1, "totalInSession": 7, "title": "Lire et analyser le Plan Marketing", "nextId": 2, "nextTitle": "Le mix marketing 7P"}, "2": {"session": 1, "sessionTitle": "Prends les rênes", "chIndex": 2, "totalInSession": 7, "title": "Le mix marketing 7P", "nextId": 3, "nextTitle": "Lecture critique d'un brief"}, "3": {"session": 1, "sessionTitle": "Prends les rênes", "chIndex": 3, "totalInSession": 7, "title": "Lecture critique d'un brief", "nextId": 4, "nextTitle": "Le RACI — qui fait quoi"}, "4": {"session": 1, "sessionTitle": "Prends les rênes", "chIndex": 4, "totalInSession": 7, "title": "Le RACI — qui fait quoi", "nextId": 5, "nextTitle": "Définir et choisir ses indicateurs de performance"}, "5": {"session": 1, "sessionTitle": "Prends les rênes", "chIndex": 5, "totalInSession": 7, "title": "Définir et choisir ses indicateurs de performance", "nextId": 6, "nextTitle": "Construire et lire un tableau de bord"}, "6": {"session": 1, "sessionTitle": "Prends les rênes", "chIndex": 6, "totalInSession": 7, "title": "Construire et lire un tableau de bord", "nextId": 7, "nextTitle": "Construire un rétroplanning"}, "7": {"session": 1, "sessionTitle": "Prends les rênes", "chIndex": 7, "totalInSession": 7, "title": "Construire un rétroplanning", "nextId": null, "nextTitle": null}, "8": {"session": 2, "sessionTitle": "Analyse et décide", "chIndex": 1, "totalInSession": 7, "title": "Analyser une campagne Google Ads", "nextId": 9, "nextTitle": "Analyser une campagne emailing"}, "9": {"session": 2, "sessionTitle": "Analyse et décide", "chIndex": 2, "totalInSession": 7, "title": "Analyser une campagne emailing", "nextId": 10, "nextTitle": "Calculer le retour sur investissement d'un salon"}, "10": {"session": 2, "sessionTitle": "Analyse et décide", "chIndex": 3, "totalInSession": 7, "title": "Calculer le retour sur investissement d'un salon", "nextId": 11, "nextTitle": "Calculer un taux d'évolution"}, "11": {"session": 2, "sessionTitle": "Analyse et décide", "chIndex": 4, "totalInSession": 7, "title": "Calculer un taux d'évolution", "nextId": 12, "nextTitle": "Analyser les écarts du tableau de bord"}, "12": {"session": 2, "sessionTitle": "Analyse et décide", "chIndex": 5, "totalInSession": 7, "title": "Analyser les écarts du tableau de bord", "nextId": 13, "nextTitle": "Appliquer la méthode des 5 pourquoi"}, "13": {"session": 2, "sessionTitle": "Analyse et décide", "chIndex": 6, "totalInSession": 7, "title": "Appliquer la méthode des 5 pourquoi", "nextId": 14, "nextTitle": "Proposer un plan d'ajustement"}, "14": {"session": 2, "sessionTitle": "Analyse et décide", "chIndex": 7, "totalInSession": 7, "title": "Proposer un plan d'ajustement", "nextId": null, "nextTitle": null}, "15": {"session": 3, "sessionTitle": "Optimise et capitalise", "chIndex": 1, "totalInSession": 7, "title": "Réviser le plan marketing", "nextId": 16, "nextTitle": "Gérer un imprévu"}, "16": {"session": 3, "sessionTitle": "Optimise et capitalise", "chIndex": 2, "totalInSession": 7, "title": "Gérer un imprévu", "nextId": 17, "nextTitle": "Réallouer le budget selon le retour sur investissement"}, "17": {"session": 3, "sessionTitle": "Optimise et capitalise", "chIndex": 3, "totalInSession": 7, "title": "Réallouer le budget selon le retour sur investissement", "nextId": 18, "nextTitle": "Rédiger un executive summary"}, "18": {"session": 3, "sessionTitle": "Optimise et capitalise", "chIndex": 4, "totalInSession": 7, "title": "Rédiger un executive summary", "nextId": 19, "nextTitle": "Préparer une présentation de résultats"}, "19": {"session": 3, "sessionTitle": "Optimise et capitalise", "chIndex": 5, "totalInSession": 7, "title": "Préparer une présentation de résultats", "nextId": 20, "nextTitle": "Conduire un retour d'expérience"}, "20": {"session": 3, "sessionTitle": "Optimise et capitalise", "chIndex": 6, "totalInSession": 7, "title": "Conduire un retour d'expérience", "nextId": 21, "nextTitle": "Mission finale — bilan complet"}, "21": {"session": 3, "sessionTitle": "Optimise et capitalise", "chIndex": 7, "totalInSession": 7, "title": "Mission finale — bilan complet", "nextId": null, "nextTitle": null}};
 var LUMIO_CH_INFO = {"lumio_1": {"session": 1, "sessionTitle": "Comprendre", "chIndex": 1, "totalInSession": 7, "title": "Introduction au marketing digital", "nextId": 2, "nextTitle": "Internet et le Web", "gameId": "lumio"}, "lumio_2": {"session": 1, "sessionTitle": "Comprendre", "chIndex": 2, "totalInSession": 7, "title": "Internet et le Web", "nextId": 3, "nextTitle": "L'évolution du Web", "gameId": "lumio"}, "lumio_3": {"session": 1, "sessionTitle": "Comprendre", "chIndex": 3, "totalInSession": 7, "title": "L'évolution du Web", "nextId": 4, "nextTitle": "Le nouveau consommateur digital", "gameId": "lumio"}, "lumio_4": {"session": 1, "sessionTitle": "Comprendre", "chIndex": 4, "totalInSession": 7, "title": "Le nouveau consommateur digital", "nextId": 5, "nextTitle": "Les fondamentaux du marketing digital", "gameId": "lumio"}, "lumio_5": {"session": 1, "sessionTitle": "Comprendre", "chIndex": 5, "totalInSession": 7, "title": "Les fondamentaux du marketing digital", "nextId": 6, "nextTitle": "Les données clients", "gameId": "lumio"}, "lumio_6": {"session": 1, "sessionTitle": "Comprendre", "chIndex": 6, "totalInSession": 7, "title": "Les données clients", "nextId": 7, "nextTitle": "Le site web vitrine", "gameId": "lumio"}, "lumio_7": {"session": 1, "sessionTitle": "Comprendre", "chIndex": 7, "totalInSession": 7, "title": "Le site web vitrine", "nextId": null, "nextTitle": null, "gameId": "lumio"}, "lumio_8": {"session": 2, "sessionTitle": "Agir", "chIndex": 1, "totalInSession": 7, "title": "Le SEO — être visible sur Google", "nextId": 9, "nextTitle": "L'email marketing", "gameId": "lumio"}, "lumio_9": {"session": 2, "sessionTitle": "Agir", "chIndex": 2, "totalInSession": 7, "title": "L'email marketing", "nextId": 10, "nextTitle": "Les réseaux sociaux", "gameId": "lumio"}, "lumio_10": {"session": 2, "sessionTitle": "Agir", "chIndex": 3, "totalInSession": 7, "title": "Les réseaux sociaux", "nextId": 11, "nextTitle": "La publicité Google Ads", "gameId": "lumio"}, "lumio_11": {"session": 2, "sessionTitle": "Agir", "chIndex": 4, "totalInSession": 7, "title": "La publicité Google Ads", "nextId": 12, "nextTitle": "Meta Ads Facebook/Instagram", "gameId": "lumio"}, "lumio_12": {"session": 2, "sessionTitle": "Agir", "chIndex": 5, "totalInSession": 7, "title": "Meta Ads Facebook/Instagram", "nextId": 13, "nextTitle": "Le content marketing", "gameId": "lumio"}, "lumio_13": {"session": 2, "sessionTitle": "Agir", "chIndex": 6, "totalInSession": 7, "title": "Le content marketing", "nextId": 14, "nextTitle": "Le parcours client digital", "gameId": "lumio"}, "lumio_14": {"session": 2, "sessionTitle": "Agir", "chIndex": 7, "totalInSession": 7, "title": "Le parcours client digital", "nextId": null, "nextTitle": null, "gameId": "lumio"}, "lumio_15": {"session": 3, "sessionTitle": "Optimiser", "chIndex": 1, "totalInSession": 7, "title": "Le marketing mobile", "nextId": 16, "nextTitle": "Mesurer avec Analytics", "gameId": "lumio"}, "lumio_16": {"session": 3, "sessionTitle": "Optimiser", "chIndex": 2, "totalInSession": 7, "title": "Mesurer avec Analytics", "nextId": 17, "nextTitle": "L'IA dans le marketing", "gameId": "lumio"}, "lumio_17": {"session": 3, "sessionTitle": "Optimiser", "chIndex": 3, "totalInSession": 7, "title": "L'IA dans le marketing", "nextId": 18, "nextTitle": "RGPD et éthique des données", "gameId": "lumio"}, "lumio_18": {"session": 3, "sessionTitle": "Optimiser", "chIndex": 4, "totalInSession": 7, "title": "RGPD et éthique des données", "nextId": 19, "nextTitle": "Construire une stratégie digitale complète", "gameId": "lumio"}, "lumio_19": {"session": 3, "sessionTitle": "Optimiser", "chIndex": 5, "totalInSession": 7, "title": "Construire une stratégie digitale complète", "nextId": 20, "nextTitle": "Le marketing digital en 2026 et demain", "gameId": "lumio"}, "lumio_20": {"session": 3, "sessionTitle": "Optimiser", "chIndex": 6, "totalInSession": 7, "title": "Le marketing digital en 2026 et demain", "nextId": 21, "nextTitle": "MISSION FINALE", "gameId": "lumio"}, "lumio_21": {"session": 3, "sessionTitle": "Optimiser", "chIndex": 7, "totalInSession": 7, "title": "MISSION FINALE ", "nextId": null, "nextTitle": null, "gameId": "lumio"}};
 
@@ -10596,60 +10811,41 @@ function showSessionSelector() {
  sel.style.display = "block";
  game.style.display = "none";
 
- // Build session/challenge selector
- var sessions = [
- { id:1, title:"Prends les r\u00eanes", period:"Janvier", color:"rgba(0,212,255,.15)", border:"rgba(0,212,255,.3)", from:1, to:7 },
- { id:2, title:"Analyse et d\u00e9cide", period:"Avril", color:"rgba(255,184,0,.1)", border:"rgba(255,184,0,.3)", from:8, to:14 },
- { id:3, title:"Optimise et capitalise", period:"Octobre", color:"rgba(0,255,136,.08)", border:"rgba(0,255,136,.25)", from:15, to:21 }
- ];
- // Override sessions for lumio
- var lumioSessions = [
- { id:1, title:"Comprendre", period:"Janvier", color:"rgba(124,58,237,.15)", border:"rgba(124,58,237,.3)", from:1, to:7 },
- { id:2, title:"Agir", period:"Avril", color:"rgba(124,58,237,.08)", border:"rgba(124,58,237,.2)", from:8, to:14 },
- { id:3, title:"Optimiser", period:"Octobre", color:"rgba(124,58,237,.05)", border:"rgba(124,58,237,.15)", from:15, to:21 }
- ];
- var signalSessions = [
-      { id:1, title:"Comprendre", period:"", color:"rgba(15,118,110,.15)", border:"rgba(15,118,110,.4)", from:1, to:7 },
-      { id:2, title:"Agir", period:"", color:"rgba(15,118,110,.08)", border:"rgba(15,118,110,.25)", from:8, to:14 },
-      { id:3, title:"Maîtriser", period:"", color:"rgba(15,118,110,.05)", border:"rgba(15,118,110,.15)", from:15, to:21 }
-     ];
- if (CURRENT_GAME_ID === "lumio") sessions = lumioSessions;
- if (CURRENT_GAME_ID === "signal") sessions = signalSessions;
- var stratSessions = [
-      { id:1, title:"Diagnostiquer", period:"", color:"rgba(37,99,235,.15)", border:"rgba(37,99,235,.4)", from:1, to:7 },
-      { id:2, title:"Construire", period:"", color:"rgba(37,99,235,.08)", border:"rgba(37,99,235,.25)", from:8, to:14 },
-      { id:3, title:"Déployer", period:"", color:"rgba(37,99,235,.05)", border:"rgba(37,99,235,.15)", from:15, to:21 }
-     ];
- if (CURRENT_GAME_ID === "strat") sessions = stratSessions;
- var nexioSessions = [
-      { id:1, title:"Comprendre", period:"", color:"rgba(234,88,12,.15)", border:"rgba(234,88,12,.4)", from:1, to:7 },
-      { id:2, title:"Engager",    period:"", color:"rgba(234,88,12,.08)", border:"rgba(234,88,12,.25)", from:8, to:14 },
-      { id:3, title:"Déployer",   period:"", color:"rgba(234,88,12,.05)", border:"rgba(234,88,12,.15)", from:15, to:21 }
-     ];
- if (CURRENT_GAME_ID === "nexio") sessions = nexioSessions;
- var solarisSessions = [
-      { id:1, title:"Comprendre", period:"", color:"rgba(99,102,241,.15)", border:"rgba(99,102,241,.4)", from:1, to:7 },
-      { id:2, title:"Maîtriser",  period:"", color:"rgba(99,102,241,.08)", border:"rgba(99,102,241,.25)", from:8, to:14 },
-      { id:3, title:"Déployer",   period:"", color:"rgba(99,102,241,.05)", border:"rgba(99,102,241,.15)", from:15, to:21 }
-     ];
- if (CURRENT_GAME_ID === "solaris") sessions = solarisSessions;
- var auroraSessions = [
-      { id:1, title:"Diagnostiquer", period:"", color:"rgba(8,145,178,.15)", border:"rgba(8,145,178,.4)", from:1, to:7 },
-      { id:2, title:"Optimiser",     period:"", color:"rgba(8,145,178,.08)", border:"rgba(8,145,178,.25)", from:8, to:14 },
-      { id:3, title:"Exceller",      period:"", color:"rgba(8,145,178,.05)", border:"rgba(8,145,178,.15)", from:15, to:21 }
-     ];
- if (CURRENT_GAME_ID === "aurora") sessions = auroraSessions;
- var edenSessions = [
-      { id:1, title:"Mettre en place", period:"", color:"rgba(190,24,93,.15)", border:"rgba(190,24,93,.4)", from:1, to:7 },
-      { id:2, title:"Élever le niveau", period:"", color:"rgba(190,24,93,.08)", border:"rgba(190,24,93,.25)", from:8, to:14 },
-      { id:3, title:"Pérenniser",       period:"", color:"rgba(190,24,93,.05)", border:"rgba(190,24,93,.15)", from:15, to:21 }
-     ];
- if (CURRENT_GAME_ID === "eden") sessions = edenSessions;
+ // ═══ SESSIONS DYNAMIQUES — Lues depuis GAMES (statiques ou Supabase) ═══
+ var gameData = GAMES.find(function(g) { return g.id === CURRENT_GAME_ID; });
+ var sessions = [];
+ if (gameData && gameData.sessions) {
+   var baseColor = gameData.color || "#7C3AED";
+   // Convertir hex en rgb pour les opacités
+   var r = parseInt(baseColor.slice(1,3),16), g2 = parseInt(baseColor.slice(3,5),16), b = parseInt(baseColor.slice(5,7),16);
+   gameData.sessions.forEach(function(sess, idx) {
+     var opacities = [0.15, 0.08, 0.05];
+     var borders = [0.4, 0.25, 0.15];
+     var op = opacities[idx] || 0.05;
+     var bd = borders[idx] || 0.15;
+     sessions.push({
+       id: sess.id,
+       title: sess.title || ("Session " + sess.id),
+       period: sess.period || "",
+       color: "rgba(" + r + "," + g2 + "," + b + "," + op + ")",
+       border: "rgba(" + r + "," + g2 + "," + b + "," + bd + ")",
+       from: (sess.id - 1) * 7 + 1,
+       to: sess.id * 7
+     });
+   });
+ } else {
+   // Fallback par défaut
+   sessions = [
+     { id:1, title:"Session 1", period:"", color:"rgba(124,58,237,.15)", border:"rgba(124,58,237,.3)", from:1, to:7 },
+     { id:2, title:"Session 2", period:"", color:"rgba(124,58,237,.08)", border:"rgba(124,58,237,.2)", from:8, to:14 },
+     { id:3, title:"Session 3", period:"", color:"rgba(124,58,237,.05)", border:"rgba(124,58,237,.15)", from:15, to:21 }
+   ];
+ }
  var gamePrefix = CURRENT_GAME_ID + "_ch";
  var scoresKey = CURRENT_GAME_ID + "_scores";
- var chInfoMap = CURRENT_GAME_ID === "lumio" ? LUMIO_CH_INFO : (CURRENT_GAME_ID === "signal" ? SIGNAL_CH_INFO : (CURRENT_GAME_ID === "strat" ? STRAT_CH_INFO : (CURRENT_GAME_ID === "nexio" ? NEXIO_CH_INFO : (CURRENT_GAME_ID === "solaris" ? SOLARIS_CH_INFO : (CURRENT_GAME_ID === "aurora" ? AURORA_CH_INFO : (CURRENT_GAME_ID === "eden" ? EDEN_CH_INFO : CH_INFO))))));
+ var chInfoMap = getChInfoMap(CURRENT_GAME_ID);
 
- // Mapping des bannières slider par jeu
+ // Mapping des bannières slider par jeu (statiques + dynamiques)
  var GAME_SLIDERS = {
   "lumero":  "img/sliders/lumero.jpg",
   "lumio":   "img/sliders/lumio.jpg",
@@ -10660,7 +10856,9 @@ function showSessionSelector() {
   "aurora":  "img/sliders/aurora.jpg",
   "eden":    "img/sliders/eden.jpg"
  };
- var sliderImg = localStorage.getItem('imm_slider_' + CURRENT_GAME_ID) || GAME_SLIDERS[CURRENT_GAME_ID] || '';
+ // Pour les jeux dynamiques, chercher le hero dans GAMES
+ var _dynGame = GAMES.find(function(g) { return g.id === CURRENT_GAME_ID; });
+ var sliderImg = localStorage.getItem('imm_slider_' + CURRENT_GAME_ID) || GAME_SLIDERS[CURRENT_GAME_ID] || (_dynGame && _dynGame.hero ? _dynGame.hero : '');
  var sliderHtml = sliderImg
   ? '<div style="width:100%;margin-bottom:0;overflow:hidden;max-height:340px;line-height:0"><img src="' + sliderImg + '" alt="" style="width:100%;height:340px;object-fit:cover;object-position:center;display:block" /></div>'
   : '';
@@ -10696,7 +10894,7 @@ function showSessionSelector() {
  // Calculer progression de la session
  var sessDone = 0, sessTotal = 0;
  for (var cid = s.from; cid <= s.to; cid++) {
- var ik = (CURRENT_GAME_ID === "lumio" || CURRENT_GAME_ID === "signal" || CURRENT_GAME_ID === "strat" || CURRENT_GAME_ID === "nexio" || CURRENT_GAME_ID === "solaris" || CURRENT_GAME_ID === "aurora" || CURRENT_GAME_ID === "eden") ? (CURRENT_GAME_ID + "_" + cid) : String(cid);
+ var ik = getChInfoKey(CURRENT_GAME_ID, cid);
  if (chInfoMap[ik]) sessTotal++;
  try {
  var sv = JSON.parse(localStorage.getItem(scoresKey) || "{}");
@@ -10718,7 +10916,7 @@ function showSessionSelector() {
  html += '<div id="' + bodyId + '" style="display:flex;flex-direction:column;gap:6px;padding:0 14px;max-height:' + (isFirst ? '2000px' : '0') + ';overflow:hidden;transition:max-height .35s ease,padding .35s ease;' + (isFirst ? 'padding-bottom:14px' : '') + '">';
 
  for (var chId = s.from; chId <= s.to; chId++) {
- var infoKey = (CURRENT_GAME_ID === "lumio" || CURRENT_GAME_ID === "signal" || CURRENT_GAME_ID === "strat" || CURRENT_GAME_ID === "nexio" || CURRENT_GAME_ID === "solaris" || CURRENT_GAME_ID === "aurora" || CURRENT_GAME_ID === "eden") ? (CURRENT_GAME_ID + "_" + chId) : String(chId);
+ var infoKey = getChInfoKey(CURRENT_GAME_ID, chId);
  var info = chInfoMap[infoKey];
  if (!info) continue;
  // Check saved score for this challenge
@@ -10814,11 +11012,12 @@ function renderGame(gameId) {
  var c = document.getElementById(s.mgId);
  if (!c) return;
 
- // Parse chId from gameId like "lumero_ch3"
- var chId = parseInt(gameId.replace(/^(lumero|lumio|signal)_ch/,"")) || 1;
- var currentGameId = gameId.indexOf("lumio_") === 0 ? "lumio" : "lumero";
- var renderChInfoMap = currentGameId === "lumio" ? LUMIO_CH_INFO : CH_INFO;
- var renderInfoKey = currentGameId === "lumio" ? (currentGameId + "_" + chId) : String(chId);
+ // Parse chId et gameId de manière générique (ex: "lumero_ch3" → gameId="lumero", chId=3)
+ var _parts = gameId.match(/^(.+)_ch(\d+)$/);
+ var chId = _parts ? parseInt(_parts[2]) : 1;
+ var currentGameId = _parts ? _parts[1] : CURRENT_GAME_ID || "lumero";
+ var renderChInfoMap = getChInfoMap(currentGameId);
+ var renderInfoKey = getChInfoKey(currentGameId, chId);
  var info = renderChInfoMap[renderInfoKey] || { session:1, sessionTitle:"Session 1", chIndex:1, totalInSession:7 };
 
  // ── RECAP PHASE ──
@@ -16038,6 +16237,7 @@ console.log('Gestion des 4 rôles chargée');
       quick = [
         { label:'Gérer les utilisateurs', action: "window.dsNav('users')" },
         { label:'Gérer les jeux', action: "window.dsNav('games')" },
+        { label:'Compétences', action: "window.dsNav('competencies')" },
         { label:'Page d\'accueil', action: "window.dsNav('homepage')" },
         { label:'Accès & API', action: "window.dsNav('access')" },
       ];
@@ -18188,6 +18388,268 @@ window.immTicketChangeStatut = function(id, newStatut) {
   window.lpv3Next=function(){if(slides)window.lpv3GoTo((cur+1)%slides.length);};
   window.lpv3Prev=function(){if(slides)window.lpv3GoTo((cur-1+slides.length)%slides.length);};
   if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',init);}else{init();}
+})();
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SCRIPT: Gestion des compétences et jeux (Dashboard Admin)
+     ═══════════════════════════════════════════════════════════ -->
+<script>
+(function() {
+  'use strict';
+
+  var ADMIN_PWD = 'imm2025';
+
+  // ═══ COMPÉTENCES : CRUD ═══
+
+  // Charger et afficher la liste des compétences
+  window.dsLoadCompetencies = function() {
+    var list = document.getElementById('ds-competencies-list');
+    if (!list) return;
+    list.innerHTML = '<p style="color:#888;font-size:.8rem">Chargement...</p>';
+
+    fetch('/.netlify/functions/games-read?type=competencies')
+      .then(function(r) { return r.json(); })
+      .then(function(comps) {
+        if (!comps || !comps.length) {
+          list.innerHTML = '<div style="text-align:center;padding:24px;color:#888"><div style="font-size:2rem;margin-bottom:8px">&#128218;</div>Aucune compétence créée.<br><small>Cliquez sur "+ Nouvelle compétence" pour commencer.</small></div>';
+          return;
+        }
+        var html = '';
+        comps.forEach(function(c) {
+          // Compter les jeux associés
+          var gameCount = (window.GAMES || []).filter(function(g) { return g.competency_id === c.id || g.domain === c.id; }).length;
+          html += '<div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:14px;margin-bottom:10px;display:flex;align-items:center;gap:12px">';
+          html += '<div style="width:36px;height:36px;border-radius:8px;background:' + (c.color || '#024AFF') + ';display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:.9rem">' + (c.label || c.id).charAt(0).toUpperCase() + '</div>';
+          html += '<div style="flex:1"><div style="font-size:.88rem;font-weight:700;color:#fff">' + (c.label || c.id) + '</div>';
+          html += '<div style="font-size:.72rem;color:rgba(255,255,255,.5)">' + (c.description || 'Aucune description') + ' — ' + gameCount + ' jeu' + (gameCount > 1 ? 'x' : '') + '</div></div>';
+          html += '<button class="ds-btn secondary" onclick="window.dsEditCompetency(\'' + c.id + '\')" style="font-size:.72rem;padding:5px 10px">Modifier</button>';
+          html += '<button onclick="window.dsDeleteCompetency(\'' + c.id + '\', \'' + (c.label || c.id).replace(/'/g, '') + '\')" style="background:none;border:1px solid rgba(255,77,109,.3);color:#FF4D6D;font-size:.72rem;padding:5px 10px;border-radius:6px;cursor:pointer;font-family:Montserrat,sans-serif;font-weight:600">Supprimer</button>';
+          html += '</div>';
+        });
+        list.innerHTML = html;
+      })
+      .catch(function(e) {
+        list.innerHTML = '<p style="color:#FF4D6D;font-size:.8rem">Erreur : ' + e.message + '</p>';
+      });
+  };
+
+  // Afficher le formulaire de création
+  window.dsShowCreateCompetency = function() {
+    document.getElementById('ds-comp-edit-id').value = '';
+    document.getElementById('ds-comp-id').value = '';
+    document.getElementById('ds-comp-id').disabled = false;
+    document.getElementById('ds-comp-label').value = '';
+    document.getElementById('ds-comp-desc').value = '';
+    document.getElementById('ds-comp-color').value = '#024AFF';
+    document.getElementById('ds-comp-order').value = '0';
+    document.getElementById('ds-comp-form-title').textContent = 'Nouvelle compétence';
+    document.getElementById('ds-comp-status').style.display = 'none';
+    document.getElementById('ds-competency-form').style.display = 'block';
+  };
+
+  // Éditer une compétence existante
+  window.dsEditCompetency = function(compId) {
+    fetch('/.netlify/functions/games-read?type=competencies')
+      .then(function(r) { return r.json(); })
+      .then(function(comps) {
+        var comp = (comps || []).find(function(c) { return c.id === compId; });
+        if (!comp) return;
+        document.getElementById('ds-comp-edit-id').value = comp.id;
+        document.getElementById('ds-comp-id').value = comp.id;
+        document.getElementById('ds-comp-id').disabled = true;
+        document.getElementById('ds-comp-label').value = comp.label || '';
+        document.getElementById('ds-comp-desc').value = comp.description || '';
+        document.getElementById('ds-comp-color').value = comp.color || '#024AFF';
+        document.getElementById('ds-comp-order').value = comp.sort_order || 0;
+        document.getElementById('ds-comp-form-title').textContent = 'Modifier : ' + (comp.label || comp.id);
+        document.getElementById('ds-comp-status').style.display = 'none';
+        document.getElementById('ds-competency-form').style.display = 'block';
+      });
+  };
+
+  // Sauvegarder (créer ou modifier) une compétence
+  window.dsSaveCompetency = function() {
+    var editId = document.getElementById('ds-comp-edit-id').value;
+    var id = editId || document.getElementById('ds-comp-id').value.trim().toLowerCase().replace(/[^a-z0-9-]/g, '-');
+    var label = document.getElementById('ds-comp-label').value.trim();
+    var desc = document.getElementById('ds-comp-desc').value.trim();
+    var color = document.getElementById('ds-comp-color').value;
+    var order = parseInt(document.getElementById('ds-comp-order').value) || 0;
+    var status = document.getElementById('ds-comp-status');
+
+    if (!id || !label) {
+      status.style.display = 'block';
+      status.style.cssText = 'display:block;background:rgba(255,77,109,.08);border:1px solid rgba(255,77,109,.2);border-radius:8px;padding:10px;color:#FF4D6D;font-size:.8rem';
+      status.textContent = 'L\'identifiant et le nom sont obligatoires.';
+      return;
+    }
+
+    status.style.display = 'block';
+    status.style.cssText = 'display:block;background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.2);border-radius:8px;padding:10px;color:#00D4FF;font-size:.8rem';
+    status.textContent = 'Enregistrement en cours...';
+
+    fetch('/.netlify/functions/games-write', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        password: ADMIN_PWD,
+        action: 'upsert-competency',
+        competency: { id: id, label: label, description: desc, color: color, sort_order: order }
+      })
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data.success) {
+        status.style.cssText = 'display:block;background:rgba(0,255,136,.08);border:1px solid rgba(0,255,136,.25);border-radius:8px;padding:10px;color:#10B981;font-size:.8rem';
+        status.textContent = 'Compétence enregistrée avec succès !';
+        setTimeout(function() {
+          document.getElementById('ds-competency-form').style.display = 'none';
+          window.dsLoadCompetencies();
+        }, 1000);
+      } else {
+        status.style.cssText = 'display:block;background:rgba(255,77,109,.08);border:1px solid rgba(255,77,109,.2);border-radius:8px;padding:10px;color:#FF4D6D;font-size:.8rem';
+        status.textContent = 'Erreur : ' + (data.error || 'inconnue');
+      }
+    })
+    .catch(function(e) {
+      status.style.cssText = 'display:block;background:rgba(255,77,109,.08);border:1px solid rgba(255,77,109,.2);border-radius:8px;padding:10px;color:#FF4D6D;font-size:.8rem';
+      status.textContent = 'Erreur réseau : ' + e.message;
+    });
+  };
+
+  // Supprimer une compétence
+  window.dsDeleteCompetency = function(compId, compLabel) {
+    if (!confirm('Supprimer la compétence "' + compLabel + '" ? Les jeux associés ne seront pas supprimés mais seront dissociés.')) return;
+
+    fetch('/.netlify/functions/games-write', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        password: ADMIN_PWD,
+        action: 'delete-competency',
+        competency_id: compId
+      })
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data.success) window.dsLoadCompetencies();
+      else alert('Erreur : ' + (data.error || 'inconnue'));
+    })
+    .catch(function(e) { alert('Erreur réseau : ' + e.message); });
+  };
+
+  // ═══ JEUX : Supprimer un jeu depuis le Dashboard ═══
+  window.dsDeleteGame = function(gameId, gameTitle) {
+    if (!confirm('Supprimer le jeu "' + gameTitle + '" de Supabase ? Cette action est irréversible.')) return;
+
+    fetch('/.netlify/functions/games-write', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        password: ADMIN_PWD,
+        action: 'delete-game',
+        game_id: gameId
+      })
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data.success) {
+        // Retirer du tableau GAMES local
+        var idx = window.GAMES.findIndex(function(g) { return g.id === gameId; });
+        if (idx >= 0) window.GAMES.splice(idx, 1);
+        // Rafraîchir
+        if (window.dsRefreshAdmin) window.dsRefreshAdmin();
+        if (window.renderCat) window.renderCat(window.af || 'all', '');
+        alert('Jeu supprimé avec succès.');
+      } else {
+        alert('Erreur : ' + (data.error || 'inconnue'));
+      }
+    })
+    .catch(function(e) { alert('Erreur réseau : ' + e.message); });
+  };
+
+  // ═══ JEUX : Associer un jeu à une compétence et un niveau ═══
+  window.dsAssignCompetency = function(gameId) {
+    var compSel = document.getElementById('ds-assign-comp-' + gameId);
+    var levelSel = document.getElementById('ds-assign-level-' + gameId);
+    if (!compSel || !levelSel) return;
+
+    var game = window.GAMES.find(function(g) { return g.id === gameId; });
+    if (!game) return;
+
+    var payload = {
+      password: ADMIN_PWD,
+      action: 'upsert-game',
+      game: {
+        id: gameId,
+        title: game.title,
+        sub: game.sub,
+        description: game.desc,
+        color: game.color,
+        bg: game.bg,
+        published: true,
+        price: game.price,
+        skills: game.skills,
+        challenges: game.challenges,
+        questionsPerChallenge: game.questionsPerChallenge,
+        totalQuestions: game.totalQuestions,
+        durationPerChallenge: game.durationPerChallenge,
+        diff: levelSel.value,
+        domain: game.domain,
+        competency: game.competency,
+        competency_id: compSel.value,
+        sessions: game.sessions,
+        hero: game.hero
+      }
+    };
+
+    fetch('/.netlify/functions/games-write', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data.success) {
+        game.competency_id = compSel.value;
+        game.diff = levelSel.value;
+        var btn = document.getElementById('ds-assign-btn-' + gameId);
+        if (btn) { btn.textContent = 'Enregistré !'; btn.style.color = '#10B981'; setTimeout(function() { btn.textContent = 'Enregistrer'; btn.style.color = ''; }, 2000); }
+      } else {
+        alert('Erreur : ' + (data.error || 'inconnue'));
+      }
+    })
+    .catch(function(e) { alert('Erreur réseau : ' + e.message); });
+  };
+
+  // ═══ Navigation Dashboard : ajouter l'entrée Compétences ═══
+  var _origDsNav = window.dsNav;
+  window.dsNav = function(panelId) {
+    if (panelId === 'competencies') {
+      // Afficher le panneau compétences
+      document.querySelectorAll('.ds-panel').forEach(function(p) { p.classList.remove('active'); });
+      var target = document.getElementById('dsp-competencies');
+      if (target) { target.classList.add('active'); }
+      // Charger les compétences
+      window.dsLoadCompetencies();
+      // Mettre à jour le titre
+      var titleEl = document.getElementById('ds-page-title');
+      if (titleEl) titleEl.textContent = 'Compétences';
+      var breadEl = document.getElementById('ds-breadcrumb');
+      if (breadEl) breadEl.textContent = 'Immersium > Compétences';
+      return;
+    }
+    // Appeler la navigation originale
+    if (typeof _origDsNav === 'function') _origDsNav(panelId);
+    else {
+      // Fallback : navigation standard
+      document.querySelectorAll('.ds-panel').forEach(function(p) { p.classList.remove('active'); });
+      var t = document.getElementById('dsp-' + panelId);
+      if (t) t.classList.add('active');
+    }
+  };
+
 })();
 </script>
 </body>
