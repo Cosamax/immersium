@@ -18420,11 +18420,11 @@ window.immTicketChangeStatut = function(id, newStatut) {
           // Compter les jeux associés
           var gameCount = (window.GAMES || []).filter(function(g) { return g.competency_id === c.id || g.domain === c.id; }).length;
           html += '<div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:14px;margin-bottom:10px;display:flex;align-items:center;gap:12px">';
-          html += '<div style="width:36px;height:36px;border-radius:8px;background:' + (c.color || '#024AFF') + ';display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:.9rem">' + (c.label || c.id).charAt(0).toUpperCase() + '</div>';
-          html += '<div style="flex:1"><div style="font-size:.88rem;font-weight:700;color:#fff">' + (c.label || c.id) + '</div>';
+          html += '<div style="width:36px;height:36px;border-radius:8px;background:' + (c.color || '#024AFF') + ';display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:.9rem">' + (c.icon || (c.name || c.label || c.id).charAt(0).toUpperCase()) + '</div>';
+          html += '<div style="flex:1"><div style="font-size:.88rem;font-weight:700;color:#fff">' + (c.name || c.label || c.id) + '</div>';
           html += '<div style="font-size:.72rem;color:rgba(255,255,255,.5)">' + (c.description || 'Aucune description') + ' — ' + gameCount + ' jeu' + (gameCount > 1 ? 'x' : '') + '</div></div>';
           html += '<button class="ds-btn secondary" onclick="window.dsEditCompetency(\'' + c.id + '\')" style="font-size:.72rem;padding:5px 10px">Modifier</button>';
-          html += '<button onclick="window.dsDeleteCompetency(\'' + c.id + '\', \'' + (c.label || c.id).replace(/'/g, '') + '\')" style="background:none;border:1px solid rgba(255,77,109,.3);color:#FF4D6D;font-size:.72rem;padding:5px 10px;border-radius:6px;cursor:pointer;font-family:Montserrat,sans-serif;font-weight:600">Supprimer</button>';
+          html += '<button onclick="window.dsDeleteCompetency(\'' + c.id + '\', \'' + (c.name || c.label || c.id).replace(/'/g, '') + '\')" style="background:none;border:1px solid rgba(255,77,109,.3);color:#FF4D6D;font-size:.72rem;padding:5px 10px;border-radius:6px;cursor:pointer;font-family:Montserrat,sans-serif;font-weight:600">Supprimer</button>';
           html += '</div>';
         });
         list.innerHTML = html;
@@ -18458,11 +18458,11 @@ window.immTicketChangeStatut = function(id, newStatut) {
         document.getElementById('ds-comp-edit-id').value = comp.id;
         document.getElementById('ds-comp-id').value = comp.id;
         document.getElementById('ds-comp-id').disabled = true;
-        document.getElementById('ds-comp-label').value = comp.label || '';
+        document.getElementById('ds-comp-label').value = comp.name || comp.label || '';
         document.getElementById('ds-comp-desc').value = comp.description || '';
         document.getElementById('ds-comp-color').value = comp.color || '#024AFF';
         document.getElementById('ds-comp-order').value = comp.sort_order || 0;
-        document.getElementById('ds-comp-form-title').textContent = 'Modifier : ' + (comp.label || comp.id);
+        document.getElementById('ds-comp-form-title').textContent = 'Modifier : ' + (comp.name || comp.label || comp.id);
         document.getElementById('ds-comp-status').style.display = 'none';
         document.getElementById('ds-competency-form').style.display = 'block';
       });
