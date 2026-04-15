@@ -9808,7 +9808,11 @@ body.game-fullscreen #gnav-mobile-menu { display: none !important; }
   </div>
   <!-- Mode texte (intégration narrative) -->
   <div id="lg-intro-text-wrap" style="display:none;padding:0 18px">
-    <div id="lg-intro-text" style="background:var(--card,#fff);border:1px solid var(--border,#e5e7eb);border-radius:12px;padding:20px 22px;font-size:.88rem;line-height:1.75;color:var(--text-main);max-height:420px;overflow-y:auto;margin-bottom:16px"></div>
+    <!-- Image hero en en-tête du texte d'intégration -->
+    <div id="lg-intro-text-hero-wrap" style="display:none;margin-bottom:0;border-radius:12px 12px 0 0;overflow:hidden">
+      <img id="lg-intro-text-hero-img" src="" alt="" style="width:100%;height:200px;object-fit:cover;object-position:center top;display:block" />
+    </div>
+    <div id="lg-intro-text" style="background:var(--card,#fff);border:1px solid var(--border,#e5e7eb);border-radius:0 0 12px 12px;padding:20px 22px;font-size:.88rem;line-height:1.75;color:var(--text-main);max-height:420px;overflow-y:auto;margin-bottom:16px"></div>
   </div>
   <!-- Boutons communs -->
   <div style="padding:0 18px">
@@ -11059,6 +11063,21 @@ window._showIntroOrSelector = function() {
     if (subEl && game) subEl.textContent = 'Découvrez votre mission avant de commencer';
     // Charger le texte d'intégration
     if (textEl && introText) textEl.innerHTML = introText;
+    // Charger l'image hero en en-tête du texte d'intégration
+    var heroWrap = document.getElementById('lg-intro-text-hero-wrap');
+    var heroImg = document.getElementById('lg-intro-text-hero-img');
+    var heroUrl = (game && game.hero) || (window.GAME_COVERS && GAME_COVERS[CURRENT_GAME_ID]) || '';
+    if (heroUrl && heroWrap && heroImg) {
+      heroImg.src = heroUrl;
+      heroImg.alt = (game && game.title) || '';
+      heroWrap.style.display = 'block';
+      // Ajuster le border-radius du texte quand l'image est présente
+      if (textEl) textEl.style.borderRadius = '0 0 12px 12px';
+    } else {
+      if (heroWrap) heroWrap.style.display = 'none';
+      // Restaurer le border-radius complet si pas d'image
+      if (textEl) textEl.style.borderRadius = '12px';
+    }
     // Charger la vidéo si disponible
     if (videoUrl && videoEl) { videoEl.src = videoUrl; videoEl.load(); }
     // Gérer la visibilité des onglets
