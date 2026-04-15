@@ -9794,13 +9794,26 @@ body.game-fullscreen #gnav-mobile-menu { display: none !important; }
   <div style="padding:20px 18px 0">
     <div id="lg-intro-title" style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:1.1rem;color:var(--text-main);margin-bottom:4px"></div>
     <div id="lg-intro-sub" style="font-size:.78rem;color:var(--text-sub);margin-bottom:16px"></div>
+    <!-- Toggle vidéo / texte -->
+    <div style="display:flex;gap:8px;margin-bottom:16px">
+      <button id="lg-intro-tab-video" onclick="window.toggleIntroMode('video')" style="font-family:Montserrat,sans-serif;font-size:.78rem;font-weight:700;padding:7px 16px;border-radius:8px;cursor:pointer;border:2px solid var(--primary);background:var(--primary);color:#fff;transition:all .2s">Regarder la vidéo</button>
+      <button id="lg-intro-tab-text" onclick="window.toggleIntroMode('text')" style="font-family:Montserrat,sans-serif;font-size:.78rem;font-weight:700;padding:7px 16px;border-radius:8px;cursor:pointer;border:2px solid var(--primary);background:transparent;color:var(--primary);transition:all .2s">Je préfère lire</button>
+    </div>
   </div>
-  <div style="padding:0 18px">
+  <!-- Mode vidéo -->
+  <div id="lg-intro-video-wrap" style="padding:0 18px">
     <div style="position:relative;background:#000;border-radius:12px;overflow:hidden;aspect-ratio:16/9;margin-bottom:16px">
       <video id="lg-intro-video" controls style="width:100%;height:100%;object-fit:contain;display:block" preload="metadata"></video>
     </div>
+  </div>
+  <!-- Mode texte (intégration narrative) -->
+  <div id="lg-intro-text-wrap" style="display:none;padding:0 18px">
+    <div id="lg-intro-text" style="background:var(--card,#fff);border:1px solid var(--border,#e5e7eb);border-radius:12px;padding:20px 22px;font-size:.88rem;line-height:1.75;color:var(--text-main);max-height:420px;overflow-y:auto;margin-bottom:16px"></div>
+  </div>
+  <!-- Boutons communs -->
+  <div style="padding:0 18px">
     <div style="display:flex;gap:10px;justify-content:flex-end;margin-bottom:20px">
-      <button onclick="window.skipIntroVideo()" style="background:none;border:1px solid var(--border);color:var(--text-sub);font-family:Montserrat,sans-serif;font-size:.78rem;font-weight:600;padding:9px 18px;border-radius:8px;cursor:pointer">Passer la vidéo</button>
+      <button onclick="window.skipIntroVideo()" style="background:none;border:1px solid var(--border);color:var(--text-sub);font-family:Montserrat,sans-serif;font-size:.78rem;font-weight:600;padding:9px 18px;border-radius:8px;cursor:pointer">Passer l'introduction</button>
       <button onclick="window.continueAfterVideo()" style="background:var(--primary);border:none;color:#fff;font-family:Montserrat,sans-serif;font-size:.82rem;font-weight:700;padding:9px 22px;border-radius:8px;cursor:pointer">Commencer →</button>
     </div>
   </div>
@@ -10979,12 +10992,54 @@ function playGame(id) {
  window._showIntroOrSelector();
 }
 
-// Affiche l'intro vidéo si une vidéo est définie, sinon va directement au sélecteur
+// Textes d'intégration par jeu (alternative à la vidéo d'intro)
+var INTRO_TEXTS = {
+  lumio: '<h3 style="margin:0 0 12px;font-family:Montserrat,sans-serif;font-size:1.05rem;color:var(--primary)">Bienvenue chez LUMIO !</h3>'
+    + '<p>Vous venez de pousser la porte d\'un petit atelier lumineux situé au c\u0153ur de Lyon. L\'air est chargé d\'effluves de cire chaude, de figue et de fleur d\'oranger. Au milieu des étagères remplies de pots en verre et de mèches en bois, une jeune femme en tablier s\'approche de vous avec un grand sourire. C\'est <strong>Sophie Martin</strong>, la fondatrice de LUMIO.</p>'
+    + '<h4 style="margin:18px 0 8px;font-family:Montserrat,sans-serif;font-size:.92rem;color:var(--text-main)">L\'entreprise et le contexte</h4>'
+    + '<p><strong>LUMIO</strong> est une jeune marque de bougies artisanales créée il y a tout juste six mois. Les produits sont d\'excellente qualité : coulés à la main, cire 100% végétale, parfums de Grasse, mèches crépitantes en bois. Les rares clients qui les ont testées sont conquis. Le problème ? Sophie est une artisane passionnée, mais elle est complètement perdue face au monde du digital. Résultat : la marque manque cruellement de visibilité et les ventes peinent à décoller.</p>'
+    + '<h4 style="margin:18px 0 8px;font-family:Montserrat,sans-serif;font-size:.92rem;color:var(--text-main)">Votre mission</h4>'
+    + '<p>À partir d\'aujourd\'hui, vous endossez le rôle de <strong>Coach Digital</strong> pour LUMIO. Votre objectif est d\'accompagner Sophie pas à pas pour construire sa présence en ligne, attirer ses premiers clients et développer son chiffre d\'affaires. Le défi est de taille : vous devez faire preuve de créativité et de pragmatisme, car le budget marketing est quasi inexistant et le temps de Sophie est limité.</p>'
+    + '<h4 style="margin:18px 0 8px;font-family:Montserrat,sans-serif;font-size:.92rem;color:var(--text-main)">Vos interlocuteurs</h4>'
+    + '<p>Au cours de votre mission, vous n\'interagirez pas seulement avec Sophie. Vous serez amené à collaborer avec :</p>'
+    + '<ul style="margin:8px 0 8px 18px;padding:0">'
+    + '<li style="margin-bottom:6px"><strong>Chloé</strong> — La meilleure amie de Sophie, graphiste freelance. Elle vous aidera sur toute la partie identité visuelle et création de contenus.</li>'
+    + '<li style="margin-bottom:6px"><strong>Julien</strong> — Le comptable de l\'entreprise. Pragmatique et rigoureux, il veillera à ce que vos idées restent rentables et respectent le budget.</li>'
+    + '<li style="margin-bottom:6px"><strong>Madame Dubois</strong> — L\'une des premières clientes fidèles de LUMIO, dont les retours seront précieux pour comprendre les attentes de votre cible.</li>'
+    + '</ul>'
+    + '<p>Votre accompagnement se déroulera en <strong>trois grandes phases</strong> : poser les bases de la présence en ligne, attirer une audience qualifiée, puis convertir cette audience en clients fidèles.</p>'
+    + '<p style="margin-top:14px;font-style:italic;color:var(--primary)">Sophie compte sur vous pour la guider avec pédagogie et l\'aider à prendre les bonnes décisions stratégiques. Prêt à faire briller LUMIO ? Le travail commence maintenant !</p>'
+};
+window.INTRO_TEXTS = INTRO_TEXTS;
+
+// Toggle entre mode vidéo et mode texte dans l'intro
+window.toggleIntroMode = function(mode) {
+  var videoWrap = document.getElementById('lg-intro-video-wrap');
+  var textWrap = document.getElementById('lg-intro-text-wrap');
+  var tabVideo = document.getElementById('lg-intro-tab-video');
+  var tabText = document.getElementById('lg-intro-tab-text');
+  var videoEl = document.getElementById('lg-intro-video');
+  if (mode === 'text') {
+    if (videoWrap) videoWrap.style.display = 'none';
+    if (textWrap) textWrap.style.display = 'block';
+    if (videoEl) videoEl.pause();
+    if (tabVideo) { tabVideo.style.background = 'transparent'; tabVideo.style.color = 'var(--primary)'; }
+    if (tabText) { tabText.style.background = 'var(--primary)'; tabText.style.color = '#fff'; }
+  } else {
+    if (videoWrap) videoWrap.style.display = 'block';
+    if (textWrap) textWrap.style.display = 'none';
+    if (tabVideo) { tabVideo.style.background = 'var(--primary)'; tabVideo.style.color = '#fff'; }
+    if (tabText) { tabText.style.background = 'transparent'; tabText.style.color = 'var(--primary)'; }
+  }
+};
+
+// Affiche l'intro (vidéo + texte alternatif) si une vidéo ou un texte est défini, sinon va directement au sélecteur
 window._showIntroOrSelector = function() {
-  // Sécurité : ne chercher une vidéo que si CURRENT_GAME_ID est défini et valide
   if (!CURRENT_GAME_ID) { showSessionSelector(); return; }
   var videoUrl = localStorage.getItem('imm_video_' + CURRENT_GAME_ID);
-  if (videoUrl) {
+  var introText = INTRO_TEXTS[CURRENT_GAME_ID] || '';
+  // Afficher l'intro si vidéo OU texte disponible
+  if (videoUrl || introText) {
     var game = GAMES.find(function(g){ return g.id === CURRENT_GAME_ID; });
     var introEl = document.getElementById('lg-intro');
     var selectEl = document.getElementById('lg-select');
@@ -10992,9 +11047,37 @@ window._showIntroOrSelector = function() {
     var titleEl = document.getElementById('lg-intro-title');
     var subEl = document.getElementById('lg-intro-sub');
     var videoEl = document.getElementById('lg-intro-video');
+    var textEl = document.getElementById('lg-intro-text');
+    var videoWrap = document.getElementById('lg-intro-video-wrap');
+    var textWrap = document.getElementById('lg-intro-text-wrap');
+    var tabVideo = document.getElementById('lg-intro-tab-video');
+    var tabText = document.getElementById('lg-intro-tab-text');
     if (titleEl && game) titleEl.textContent = game.title || '';
-    if (subEl && game) subEl.textContent = 'Vidéo de présentation — regardez avant de commencer';
-    if (videoEl) { videoEl.src = videoUrl; videoEl.load(); }
+    if (subEl && game) subEl.textContent = 'Découvrez votre mission avant de commencer';
+    // Charger le texte d'intégration
+    if (textEl && introText) textEl.innerHTML = introText;
+    // Charger la vidéo si disponible
+    if (videoUrl && videoEl) { videoEl.src = videoUrl; videoEl.load(); }
+    // Gérer la visibilité des onglets
+    if (videoUrl && introText) {
+      // Les deux modes disponibles : afficher vidéo par défaut
+      if (tabVideo) tabVideo.style.display = '';
+      if (tabText) tabText.style.display = '';
+      if (videoWrap) videoWrap.style.display = 'block';
+      if (textWrap) textWrap.style.display = 'none';
+    } else if (videoUrl) {
+      // Seulement vidéo
+      if (tabVideo) tabVideo.style.display = 'none';
+      if (tabText) tabText.style.display = 'none';
+      if (videoWrap) videoWrap.style.display = 'block';
+      if (textWrap) textWrap.style.display = 'none';
+    } else {
+      // Seulement texte
+      if (tabVideo) tabVideo.style.display = 'none';
+      if (tabText) tabText.style.display = 'none';
+      if (videoWrap) videoWrap.style.display = 'none';
+      if (textWrap) textWrap.style.display = 'block';
+    }
     if (introEl) introEl.style.display = 'block';
     if (selectEl) selectEl.style.display = 'none';
     if (lgEl) lgEl.style.display = 'none';
@@ -11003,7 +11086,7 @@ window._showIntroOrSelector = function() {
   }
 };
 
-// Passer la vidéo
+// Passer l'introduction
 window.skipIntroVideo = function() {
   var videoEl = document.getElementById('lg-intro-video');
   if (videoEl) { videoEl.pause(); videoEl.src = ''; }
