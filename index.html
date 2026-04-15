@@ -15562,6 +15562,15 @@ console.log('Gestion des 4 rôles chargée');
     // Fermer tous les sous-menus
     document.querySelectorAll('.gnav-item.open').forEach(function(el){ el.classList.remove('open'); });
     if (!wasOpen) item.classList.add('open');
+    // Naviguer vers la page principale de l'item (Catalogue -> s-catalogue, Administration -> sdash)
+    var menu = window._gnavCurrentMenu;
+    if (menu && menu[idx] && menu[idx].action) {
+      menu[idx].action();
+      // Marquer actif
+      document.querySelectorAll('.gnav-btn').forEach(function(b){ b.classList.remove('active'); });
+      var btn = document.querySelector('#gnav-item-' + idx + ' .gnav-btn');
+      if (btn) btn.classList.add('active');
+    }
   };
 
   // Fermer les sous-menus en cliquant ailleurs
