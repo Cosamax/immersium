@@ -69,12 +69,40 @@ exports.handler = async function (event) {
         updated_at: new Date().toISOString()
       };
 
+      // Ajouter video_url si fourni (ne pas écraser si non fourni)
+      if (game.video_url !== undefined) payload.video_url = game.video_url;
+      // Ajouter intro_text si fourni
+      if (game.intro_text !== undefined) payload.intro_text = game.intro_text;
+
       // Ne pas inclure challenges_data si null (colonne peut ne pas exister)
       if (!payload.challenges_data) delete payload.challenges_data;
 
       const { data, error } = await sb
         .from("games")
         .upsert(payload, { onConflict: "id" })
+        .select();
+
+      if (error) throw error;
+      return { statusCode: 200, headers, body: JSON.stringify({ success: true, game: data?.[0] }) };
+    }
+
+    // ═══════════════════════════════════════
+    // ACTION : Mettre à jour uniquement la vidéo d'intro
+    // ═══════════════════════════════════════
+    if (action === "update-video-url") {
+      const gameId = body.game_id || body.gameId;
+      if (!gameId) {
+        return { statusCode: 400, headers, body: JSON.stringify({ error: "game_id requis" }) };
+      }
+
+      const updatePayload = { updated_at: new Date().toISOString() };
+      if (body.video_url !== undefined) updatePayload.video_url = body.video_url;
+      if (body.intro_text !== undefined) updatePayload.intro_text = body.intro_text;
+
+      const { data, error } = await sb
+        .from("games")
+        .update(updatePayload)
+        .eq("id", gameId)
         .select();
 
       if (error) throw error;

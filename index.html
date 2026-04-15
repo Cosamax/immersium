@@ -11036,8 +11036,11 @@ window.toggleIntroMode = function(mode) {
 // Affiche l'intro (vidéo + texte alternatif) si une vidéo ou un texte est défini, sinon va directement au sélecteur
 window._showIntroOrSelector = function() {
   if (!CURRENT_GAME_ID) { showSessionSelector(); return; }
-  var videoUrl = localStorage.getItem('imm_video_' + CURRENT_GAME_ID);
-  var introText = INTRO_TEXTS[CURRENT_GAME_ID] || '';
+  // Chercher la vidéo d'abord dans les données Supabase (GAMES), puis fallback localStorage
+  var _game = GAMES.find(function(g){ return g.id === CURRENT_GAME_ID; });
+  var videoUrl = (_game && _game.video_url) || localStorage.getItem('imm_video_' + CURRENT_GAME_ID);
+  // Chercher le texte d'intégration dans INTRO_TEXTS (codé en dur) ou dans les données Supabase
+  var introText = INTRO_TEXTS[CURRENT_GAME_ID] || (_game && _game.intro_text) || '';
   // Afficher l'intro si vidéo OU texte disponible
   if (videoUrl || introText) {
     var game = GAMES.find(function(g){ return g.id === CURRENT_GAME_ID; });
@@ -17084,7 +17087,9 @@ console.log('Gestion des 4 rôles chargée');
     var currentDiv = document.getElementById('ds-video-current');
     var preview = document.getElementById('ds-video-preview');
     if (!gameId) { if (currentDiv) currentDiv.style.display = 'none'; return; }
-    var url = localStorage.getItem('imm_video_' + gameId);
+    // Chercher d'abord dans les données du jeu (Supabase), puis fallback localStorage
+    var game = (window.GAMES || []).find(function(g) { return g.id === gameId; });
+    var url = (game && game.video_url) || localStorage.getItem('imm_video_' + gameId);
     if (url && currentDiv && preview) {
       preview.src = url;
       currentDiv.style.display = 'block';
@@ -17097,6 +17102,17 @@ console.log('Gestion des 4 rôles chargée');
     var gameId = document.getElementById('ds-video-game-select').value;
     if (!gameId) return;
     localStorage.removeItem('imm_video_' + gameId);
+    // Supprimer aussi dans Supabase via l'API
+    fetch('/.netlify/functions/games-write', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: 'imm2025', action: 'update-video-url', game_id: gameId, video_url: null })
+    }).then(function(r) { return r.json(); }).then(function(d) {
+      // Mettre à jour GAMES en mémoire
+      var game = (window.GAMES || []).find(function(g) { return g.id === gameId; });
+      if (game) game.video_url = null;
+      console.log('Video URL supprimée dans Supabase:', d);
+    }).catch(function(e) { console.error('Erreur suppression video_url:', e); });
     var currentDiv = document.getElementById('ds-video-current');
     var preview = document.getElementById('ds-video-preview');
     if (preview) preview.src = '';
@@ -17248,7 +17264,18 @@ console.log('Gestion des 4 rôles chargée');
         var res = JSON.parse(xhr.responseText);
         var url = res.secure_url;
         localStorage.setItem('imm_video_' + gameId, url);
-        window._dsVideoStatus('✓ Vidéo uploadée avec succès !', 'success');
+        // Sauvegarder aussi dans Supabase pour que tous les apprenants y aient accès
+        fetch('/.netlify/functions/games-write', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ password: 'imm2025', action: 'update-video-url', game_id: gameId, video_url: url })
+        }).then(function(r) { return r.json(); }).then(function(d) {
+          // Mettre à jour GAMES en mémoire
+          var game = (window.GAMES || []).find(function(g) { return g.id === gameId; });
+          if (game) game.video_url = url;
+          console.log('Video URL sauvegardée dans Supabase:', d);
+        }).catch(function(e) { console.error('Erreur sauvegarde video_url:', e); });
+        window._dsVideoStatus('✓ Vidéo uploadée avec succès !', 'success');
         window.loadVideoForGame(gameId);
       } else {
         var err = {};
