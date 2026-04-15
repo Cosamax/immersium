@@ -10009,8 +10009,8 @@ function loadCatalog() {
            var entry = {
              id: g.id,
              title: g.title || g.id,
-             sub: g.sub || "",
-             desc: g.description || "",
+             sub: g.subtitle || g.sub || "",
+             desc: g.description || g.desc || "",
              color: g.color || "#7C3AED",
              bg: g.bg || "rgba(124,58,237,.08)",
              pub: true,
@@ -10033,11 +10033,20 @@ function loadCatalog() {
            GAMES.push(entry);
            ua.push(g.id);
            // Enregistrer les challenges dans CHS si disponibles
-           if (g.challenges_data && g.challenges_data.length) {
-             g.challenges_data.forEach(function(ch) {
-               var chKey = g.id + "_ch" + ch.challenge_num;
-               if (!CHS[chKey]) CHS[chKey] = ch.questions || [];
-             });
+           // Charger les challenges_data dans CHS
+           if (g.challenges_data) {
+             if (typeof g.challenges_data === 'object' && !Array.isArray(g.challenges_data)) {
+               // Format dict : { "lumio_ch1": [...questions...], "lumio_ch2": [...] }
+               Object.keys(g.challenges_data).forEach(function(chKey) {
+                 if (!CHS[chKey]) CHS[chKey] = g.challenges_data[chKey] || [];
+               });
+             } else if (Array.isArray(g.challenges_data)) {
+               // Format array : [{ challenge_num: 1, questions: [...] }, ...]
+               g.challenges_data.forEach(function(ch) {
+                 var chKey = g.id + "_ch" + ch.challenge_num;
+                 if (!CHS[chKey]) CHS[chKey] = ch.questions || [];
+               });
+             }
            }
            // Construire la CH_INFO_MAP pour ce jeu
            getChInfoMap(g.id);
@@ -10049,9 +10058,41 @@ function loadCatalog() {
 
  // 3. Attendre les deux chargements puis afficher
  Promise.all([competenciesPromise, gamesPromise])
-   .then(function() { renderCat("all", ""); })
-   .catch(function() { renderCat("all", ""); });
+   .then(function() {
+     // Mettre à jour l'accès aux jeux pour l'admin (inclure les jeux Supabase)
+     var _sess = null;
+     try { _sess = JSON.parse(localStorage.getItem('imm_session') || 'null'); } catch(e) {}
+     if (_sess && (_sess.isAdmin || _sess.role === 'admin')) {
+       ua = GAMES.filter(function(g) { return g.pub; }).map(function(g) { return g.id; });
+     }
+     renderCat("all", "");
+     // Reconstruire l'accordéon du catalogue public après chargement Supabase
+     if (window._buildScatCatalogue) window._buildScatCatalogue();
+     // Masquer le CTA "Créer mon compte" si l'utilisateur est connecté
+     _updateScatCta();
+   })
+   .catch(function() {
+     renderCat("all", "");
+     if (window._buildScatCatalogue) window._buildScatCatalogue();
+     _updateScatCta();
+   });
 }
+
+// ═══ Masquer/afficher le CTA du catalogue public selon l'état de connexion ═══
+function _updateScatCta() {
+  var ctaWrap = document.getElementById('scat-cta-title');
+  if (!ctaWrap) return;
+  var ctaBlock = ctaWrap.closest('div[style*="background:#042C53"]');
+  if (!ctaBlock) return;
+  var session = null;
+  try { session = JSON.parse(localStorage.getItem('imm_session') || 'null'); } catch(e) {}
+  if (session && session.name) {
+    ctaBlock.style.display = 'none';
+  } else {
+    ctaBlock.style.display = '';
+  }
+}
+window._updateScatCta = _updateScatCta;
 
 // ═══ Mise à jour dynamique des filtres du catalogue ═══
 function updateCatalogFilters(competencies) {
@@ -13657,17 +13698,33 @@ document.addEventListener('click', function(e) {
     var games = window.GAMES;
     if (!games || !games.length) return;
 
-    // Regrouper par domaine
+    // Regrouper par compétence (competency_id) ou par domaine (legacy)
+    var comps = window.COMPETENCIES || [];
+    var compMap = {};
+    comps.forEach(function(c) { compMap[c.id] = c; });
+
     var domains = {};
     games.forEach(function(g) {
-      var d = g.domain || 'autre';
+      var d = 'autre';
+      if (g.competency_id && compMap[g.competency_id]) {
+        d = g.competency_id;
+      } else if (g.domain) {
+        d = g.domain;
+      }
       if (!domains[d]) domains[d] = [];
       domains[d].push(g);
     });
 
     var html = '';
     Object.keys(domains).forEach(function(domainKey) {
-      var cfg = DOMAIN_CONFIG[domainKey] || { label: domainKey, cls: 'lp-acc-md', desc: '' };
+      // Chercher d'abord dans les compétences Supabase (UUID), puis dans le DOMAIN_CONFIG legacy
+      var cfg;
+      if (compMap[domainKey]) {
+        var c = compMap[domainKey];
+        cfg = { label: c.name, cls: 'lp-acc-md', desc: c.description || '' };
+      } else {
+        cfg = DOMAIN_CONFIG[domainKey] || { label: domainKey, cls: 'lp-acc-md', desc: '' };
+      }
       var gamesInDomain = domains[domainKey];
       var count = gamesInDomain.length;
       var uid = domainKey.replace(/[^a-z0-9]/g, '_');
@@ -15455,6 +15512,8 @@ console.log('Gestion des 4 rôles chargée');
     window.goTo = function(id) {
       _origGoTo(id);
       window.gnavSetActive(id);
+      // Mettre à jour le CTA du catalogue public quand on y navigue
+      if (id === 's-catalogue' && window._updateScatCta) window._updateScatCta();
     };
   }
 
