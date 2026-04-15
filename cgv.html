@@ -19,9 +19,12 @@ body{font-family:'Outfit',sans-serif;background:var(--bg2);color:var(--ink);min-
 nav{display:flex;align-items:center;justify-content:space-between;padding:0.875rem 1.5rem;background:#fff;border:0.5px solid var(--border);border-radius:var(--r-lg);margin-bottom:14px;}
 .nav-logo{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:500;color:var(--ink);text-decoration:none;}
 .nav-logo span{color:var(--primary);}
-.nav-back{font-size:13px;color:var(--gray);text-decoration:none;display:flex;align-items:center;gap:6px;transition:color 0.15s;}
-.nav-back:hover{color:var(--ink);}
-.nav-back svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;}
+.nav-links{display:flex;align-items:center;gap:6px;}
+.nav-link{font-size:13px;color:var(--gray);text-decoration:none;display:flex;align-items:center;gap:5px;padding:6px 12px;border-radius:8px;transition:all 0.15s;font-weight:500;}
+.nav-link:hover{color:var(--ink);background:var(--bg2);}
+.nav-link svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;}
+.nav-link--active{color:var(--primary);background:var(--primary-light);}
+@media(max-width:640px){.nav-links{gap:2px;}.nav-link{font-size:12px;padding:5px 8px;}.nav-link span{display:none;}}
 
 .doc-wrap{background:#fff;border:0.5px solid var(--border);border-radius:var(--r-xl);overflow:hidden;}
 
@@ -87,10 +90,24 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0.875r
 
   <nav>
     <a class="nav-logo" href="/">Immersium<span>.</span></a>
-    <a class="nav-back" href="/">
-      <svg viewBox="0 0 16 16"><polyline points="10 4 6 8 10 12"/></svg>
-      Retour à l'accueil
-    </a>
+    <div class="nav-links">
+      <a class="nav-link" href="/">
+        <svg viewBox="0 0 16 16"><path d="M3 6.5L8 2l5 4.5V14H3z"/></svg>
+        <span>Accueil</span>
+      </a>
+      <a class="nav-link" href="/?page=s-catalogue">
+        <svg viewBox="0 0 16 16"><rect x="2" y="2" width="5" height="5" rx="1"/><rect x="9" y="2" width="5" height="5" rx="1"/><rect x="2" y="9" width="5" height="5" rx="1"/><rect x="9" y="9" width="5" height="5" rx="1"/></svg>
+        <span>Catalogue</span>
+      </a>
+      <a class="nav-link" href="/?page=sdash">
+        <svg viewBox="0 0 16 16"><path d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM8 5v3l2.5 1.5"/></svg>
+        <span>Administration</span>
+      </a>
+      <a class="nav-link nav-link--active" href="/cgv">
+        <svg viewBox="0 0 16 16"><path d="M4 2h8a1 1 0 011 1v10a1 1 0 01-1 1H4a1 1 0 01-1-1V3a1 1 0 011-1z"/><line x1="5" y1="5" x2="11" y2="5"/><line x1="5" y1="8" x2="11" y2="8"/><line x1="5" y1="11" x2="8" y2="11"/></svg>
+        <span>CGV</span>
+      </a>
+    </div>
   </nav>
 
   <div class="doc-wrap">

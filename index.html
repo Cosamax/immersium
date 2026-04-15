@@ -14064,6 +14064,25 @@ try {
  loadCatalog();
 }
 
+// ── Navigation via paramètre URL (?page=xxx) ──
+// Permet aux pages secondaires (CGV, certificat) de rediriger vers une page interne
+(function() {
+  try {
+    var urlParams = new URLSearchParams(window.location.search);
+    var targetPage = urlParams.get('page');
+    if (targetPage) {
+      // Attendre que la session soit restaurée puis naviguer
+      setTimeout(function() {
+        if (window.goTo) window.goTo(targetPage);
+        // Nettoyer l'URL sans recharger la page
+        if (window.history && window.history.replaceState) {
+          window.history.replaceState({}, '', window.location.pathname);
+        }
+      }, 500);
+    }
+  } catch(e) {}
+})();
+
 function lpInit() {
  // Initialiser le slider du hero
  if (window.lpSlide) window.lpSlide(1);
