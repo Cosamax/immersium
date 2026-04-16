@@ -65,7 +65,9 @@ exports.handler = async function (event) {
     }
 
     // ── Liste complète des jeux (avec filtres optionnels) ──
-    let query = sb.from("games").select("*");
+    // Exclure challenges_data du listing pour rester sous la limite 6 MB Netlify
+    const listColumns = "id,title,subtitle,description,color,bg,published,price,skills,challenges,questions_per_challenge,total_questions,duration_per_challenge,difficulty,sessions,created_at,updated_at,competency_id,sort_order,video_url,intro_text";
+    let query = sb.from("games").select(listColumns);
 
     // Filtre par compétence
     if (params.competency_id) {
