@@ -12509,7 +12509,14 @@ document.getElementById("ed-game").onchange = function() {
  var chTitle = info.title || (CHS[chKey][0] && (CHS[chKey][0].title || CHS[chKey][0].t)) || "Challenge " + i;
  chs.push({ challenge_num: i, session_num: info.session || 1, title: chTitle, available: true, questions: CHS[chKey] });
  }
- edGameData = { id: gameId, title: gameObj.title, challengesData: chs };
+ edGameData = { id: gameId, title: gameObj.title, challengesData: chs, difficulty: gameObj.diff || 'Tous niveaux' };
+ // Pré-sélectionner le niveau pour les jeux intégrés
+ var edLevelSel = document.getElementById('ed-level');
+ if (edLevelSel && gameObj.diff) {
+ for (var li = 0; li < edLevelSel.options.length; li++) {
+ if (edLevelSel.options[li].value === gameObj.diff) { edLevelSel.selectedIndex = li; break; }
+ }
+ }
  chSel.innerHTML = '<option value="">-- Sélectionnez un challenge --</option>'
  + chs.map(function(ch) {
  return '<option value="' + ch.challenge_num + '">Ch.' + ch.challenge_num + ' — ' + ch.title + '</option>';
@@ -12730,42 +12737,42 @@ window.saveEdLevel = function() {
  status.textContent = 'Mise à jour du niveau...';
  // Pour les jeux Supabase, on fait un upsert avec le nouveau niveau
  var gameId = edGameData.id;
+ // Pour les jeux embedded, utiliser l'ID sans le prefixe pour Supabase
  if (gameId.indexOf('__embedded__') === 0) {
- status.style.cssText = 'display:block;color:#F59E0B';
- status.textContent = 'Les jeux intégrés ne supportent pas la modification du niveau.';
- btn.disabled = false;
- btn.textContent = 'Enregistrer le niveau';
- return;
+ gameId = gameId.replace('__embedded__', '');
  }
- fetch('/.netlify/functions/games-write', {
- method: 'POST',
- headers: { 'Content-Type': 'application/json' },
- body: JSON.stringify({
- password: 'imm2025',
- action: 'upsert-game',
- game: {
+ // Charger d'abord les donnees completes depuis Supabase pour ne pas les ecraser
+ fetch('/.netlify/functions/games-read?id=' + encodeURIComponent(gameId))
+ .then(function(r) { return r.json(); })
+ .then(function(fullData) {
+ // Mettre a jour uniquement le niveau
+ var gamePayload = {
  id: gameId,
- title: edGameData.title,
- sub: edGameData.subtitle,
- desc: edGameData.description,
- color: edGameData.color,
- bg: edGameData.bg,
- pub: edGameData.published,
- price: edGameData.price,
- skills: edGameData.skills,
- challenges: edGameData.challenges,
- questionsPerChallenge: edGameData.questions_per_challenge,
- totalQuestions: edGameData.total_questions,
- durationPerChallenge: edGameData.duration_per_challenge,
+ title: fullData.title,
+ sub: fullData.subtitle,
+ desc: fullData.description,
+ color: fullData.color,
+ bg: fullData.bg,
+ pub: fullData.published,
+ price: fullData.price,
+ skills: fullData.skills,
+ challenges: fullData.challenges,
+ questionsPerChallenge: fullData.questions_per_challenge,
+ totalQuestions: fullData.total_questions,
+ durationPerChallenge: fullData.duration_per_challenge,
  diff: newLevel,
- sessions: edGameData.sessions,
- competency_id: edGameData.competency_id,
- sort_order: edGameData.sort_order,
- challengesData: (edGameData.challengesData || []).map(function(c) {
+ sessions: fullData.sessions,
+ competency_id: fullData.competency_id,
+ sort_order: fullData.sort_order,
+ challengesData: (fullData.challengesData || []).map(function(c) {
  return { id: c.challenge_num, session: c.session_num, title: c.title, available: c.available, questions: c.questions };
  })
- }
- })
+ };
+ return fetch('/.netlify/functions/games-write', {
+ method: 'POST',
+ headers: { 'Content-Type': 'application/json' },
+ body: JSON.stringify({ password: 'imm2025', game: gamePayload })
+ });
  })
  .then(function(r) { return r.json(); })
  .then(function(data) {
@@ -12773,6 +12780,9 @@ window.saveEdLevel = function() {
  btn.textContent = 'Enregistrer le niveau';
  if (data.success) {
  edGameData.difficulty = newLevel;
+ // Mettre aussi a jour le GAMES local pour le catalogue
+ var gObj = (window.GAMES || []).find(function(g) { return g.id === gameId; });
+ if (gObj) gObj.diff = newLevel;
  status.style.cssText = 'display:block;color:#22C55E';
  status.textContent = 'Niveau mis à jour : ' + newLevel;
  } else {
