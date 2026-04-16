@@ -11085,12 +11085,49 @@ var CURRENT_CH_ID = 1;
 var CURRENT_GAME_ID = null; // Ne pas initialiser à "lumero" pour éviter d'afficher sa vidéo sur tous les jeux
 
 
+// ═══ LAZY LOADING — Charge les challenges_data à la demande pour les jeux Supabase ═══
+window._loadChallengesIfNeeded = function(gameId, callback) {
+  // Vérifier si les challenges sont déjà chargés dans CHS
+  var firstKey = gameId + "_ch1";
+  if (CHS[firstKey]) { callback(); return; }
+  // Vérifier si c'est un jeu Supabase
+  var game = GAMES.find(function(g) { return g.id === gameId; });
+  if (!game || !game._fromSupabase) { callback(); return; }
+  // Charger les challenges_data depuis l'API
+  console.log("[LazyLoad] Chargement des challenges pour", gameId);
+  fetch("/.netlify/functions/games-read?id=" + encodeURIComponent(gameId))
+    .then(function(r) { return r.json(); })
+    .then(function(g) {
+      if (g && g.challenges_data) {
+        if (typeof g.challenges_data === 'object' && !Array.isArray(g.challenges_data)) {
+          Object.keys(g.challenges_data).forEach(function(chKey) {
+            if (!CHS[chKey]) CHS[chKey] = g.challenges_data[chKey] || [];
+          });
+        } else if (Array.isArray(g.challenges_data)) {
+          g.challenges_data.forEach(function(ch) {
+            var chKey = g.id + "_ch" + ch.challenge_num;
+            if (!CHS[chKey]) CHS[chKey] = ch.questions || [];
+          });
+        }
+        console.log("[LazyLoad] Challenges chargés pour", gameId);
+      }
+      callback();
+    })
+    .catch(function(e) {
+      console.warn("[LazyLoad] Erreur chargement challenges:", e);
+      callback();
+    });
+};
+
 window.playGameFromCatalog = function playGameFromCatalog(gameId) {
  CURRENT_GAME_ID = gameId;
  var m = ovMap[gameId];
  if (!m) return;
  document.getElementById(m.ov).classList.add("open");
- window._showIntroOrSelector();
+ // Lazy load challenges avant d'afficher le sélecteur
+ window._loadChallengesIfNeeded(gameId, function() {
+   window._showIntroOrSelector();
+ });
 }
 
 function playGame(id) {
@@ -11134,7 +11171,10 @@ function playGame(id) {
  }
  }
  document.getElementById(m.ov).classList.add("open");
- window._showIntroOrSelector();
+ // Lazy load challenges avant d'afficher le sélecteur
+ window._loadChallengesIfNeeded(id, function() {
+   window._showIntroOrSelector();
+ });
 }
 
 // Textes d'intégration par jeu (alternative à la vidéo d'intro)
