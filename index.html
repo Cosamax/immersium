@@ -9773,6 +9773,21 @@ body.game-fullscreen #gnav-mobile-menu { display: none !important; }
 <option value="">Sélectionnez un jeu d'abord</option>
 </select>
 </div>
+<div id="ed-level-block" style="display:none;background:var(--card);border:1px solid rgba(255,255,255,.08);border-radius:11px;padding:13px;margin-bottom:10px">
+<label style="font-size:.76rem;color:var(--t2);display:block;margin-bottom:6px">Niveau de difficulté</label>
+<div style="display:flex;gap:8px;align-items:center">
+<select id="ed-level" style="flex:1;background:#1A2236;border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:9px 12px;color:#fff;font-family:'DM Sans',sans-serif;font-size:.84rem;outline:none">
+<option value="Tous niveaux">Tous niveaux</option>
+<option value="Débutant">Débutant</option>
+<option value="Intermédiaire">Intermédiaire</option>
+<option value="Avancé">Avancé</option>
+<option value="Accessible">Accessible</option>
+<option value="Débutant à Intermédiaire">Débutant à Intermédiaire</option>
+</select>
+<button id="ed-level-save" onclick="window.saveEdLevel()" style="padding:9px 18px;border-radius:8px;border:none;background:#7C3AED;color:#fff;font-size:.82rem;font-weight:700;cursor:pointer;white-space:nowrap">Enregistrer le niveau</button>
+</div>
+<div id="ed-level-status" style="font-size:.75rem;margin-top:8px;display:none"></div>
+</div>
 <div id="ed-color-block" style="display:none;background:var(--card);border:1px solid rgba(255,255,255,.08);border-radius:11px;padding:13px;margin-bottom:10px">
 <label style="font-size:.76rem;color:var(--t2);display:block;margin-bottom:10px;font-weight:600">Couleur du texte dans le jeu</label>
 <div style="display:flex;gap:8px;flex-wrap:wrap" id="ed-color-btns">
@@ -12463,6 +12478,8 @@ document.getElementById("ed-game").onchange = function() {
  // Afficher/masquer le bloc couleur
  var colorBlock = document.getElementById('ed-color-block');
  if (colorBlock) colorBlock.style.display = gameId ? 'block' : 'none';
+ var levelBlock = document.getElementById('ed-level-block');
+ if (levelBlock) levelBlock.style.display = gameId ? 'block' : 'none';
  if (!gameId) {
  chSel.innerHTML = '<option value="">Sélectionnez un jeu d\'abord</option>';
  return;
@@ -12506,6 +12523,13 @@ document.getElementById("ed-game").onchange = function() {
  .then(function(r) { return r.json(); })
  .then(function(data) {
  edGameData = data;
+ // Pré-sélectionner le niveau dans le select
+ var edLevelSel = document.getElementById('ed-level');
+ if (edLevelSel && data.difficulty) {
+ for (var li = 0; li < edLevelSel.options.length; li++) {
+ if (edLevelSel.options[li].value === data.difficulty) { edLevelSel.selectedIndex = li; break; }
+ }
+ }
  var chs = data.challengesData || [];
  chSel.innerHTML = '<option value="">-- Sélectionnez un challenge --</option>'
  + chs.map(function(ch) {
@@ -12638,7 +12662,7 @@ function saveEditorChanges(ch, gameId, qCount) {
  questionsPerChallenge: updatedGame.questions_per_challenge,
  totalQuestions: updatedGame.total_questions,
  durationPerChallenge: updatedGame.duration_per_challenge,
- diff: updatedGame.difficulty,
+ diff: document.getElementById('ed-level') ? document.getElementById('ed-level').value : (updatedGame.difficulty || 'Tous niveaux'),
  sessions: updatedGame.sessions,
  challengesData: (updatedGame.challengesData || []).map(function(c) {
  return {
@@ -12692,6 +12716,77 @@ function saveEditorChanges(ch, gameId, qCount) {
  status.textContent = "Erreur r\u00e9seau : " + e.message;
  });
 }
+
+// Sauvegarder le niveau indépendamment
+window.saveEdLevel = function() {
+ var levelSel = document.getElementById('ed-level');
+ var status = document.getElementById('ed-level-status');
+ var btn = document.getElementById('ed-level-save');
+ if (!edGameData || !levelSel) return;
+ var newLevel = levelSel.value;
+ btn.disabled = true;
+ btn.textContent = 'Enregistrement...';
+ status.style.cssText = 'display:block;color:var(--t2)';
+ status.textContent = 'Mise à jour du niveau...';
+ // Pour les jeux Supabase, on fait un upsert avec le nouveau niveau
+ var gameId = edGameData.id;
+ if (gameId.indexOf('__embedded__') === 0) {
+ status.style.cssText = 'display:block;color:#F59E0B';
+ status.textContent = 'Les jeux intégrés ne supportent pas la modification du niveau.';
+ btn.disabled = false;
+ btn.textContent = 'Enregistrer le niveau';
+ return;
+ }
+ fetch('/.netlify/functions/games-write', {
+ method: 'POST',
+ headers: { 'Content-Type': 'application/json' },
+ body: JSON.stringify({
+ password: 'imm2025',
+ action: 'upsert-game',
+ game: {
+ id: gameId,
+ title: edGameData.title,
+ sub: edGameData.subtitle,
+ desc: edGameData.description,
+ color: edGameData.color,
+ bg: edGameData.bg,
+ pub: edGameData.published,
+ price: edGameData.price,
+ skills: edGameData.skills,
+ challenges: edGameData.challenges,
+ questionsPerChallenge: edGameData.questions_per_challenge,
+ totalQuestions: edGameData.total_questions,
+ durationPerChallenge: edGameData.duration_per_challenge,
+ diff: newLevel,
+ sessions: edGameData.sessions,
+ competency_id: edGameData.competency_id,
+ sort_order: edGameData.sort_order,
+ challengesData: (edGameData.challengesData || []).map(function(c) {
+ return { id: c.challenge_num, session: c.session_num, title: c.title, available: c.available, questions: c.questions };
+ })
+ }
+ })
+ })
+ .then(function(r) { return r.json(); })
+ .then(function(data) {
+ btn.disabled = false;
+ btn.textContent = 'Enregistrer le niveau';
+ if (data.success) {
+ edGameData.difficulty = newLevel;
+ status.style.cssText = 'display:block;color:#22C55E';
+ status.textContent = 'Niveau mis à jour : ' + newLevel;
+ } else {
+ status.style.cssText = 'display:block;color:#EF4444';
+ status.textContent = 'Erreur : ' + (data.error || 'inconnue');
+ }
+ })
+ .catch(function(e) {
+ btn.disabled = false;
+ btn.textContent = 'Enregistrer le niveau';
+ status.style.cssText = 'display:block;color:#EF4444';
+ status.textContent = 'Erreur réseau : ' + e.message;
+ });
+};
 
 function escHtml(s) {
  return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
