@@ -1177,6 +1177,7 @@ body{font-family:"Montserrat",sans-serif;background:var(--bg);color:var(--text-m
 .lp-sim-access { font-size: 10px; font-weight: 500; padding: 3px 9px; border-radius: 20px; }
 .lp-tag-free { background: #E1F5EE; color: #085041; }
 .lp-tag-member { background: #F1F3F5; color: #ADB5BD; border: 0.5px solid #E9ECEF; }
+.lp-tag-level { font-size: 10px; font-weight: 500; padding: 3px 9px; border-radius: 20px; background: #EDE9FE; color: #7C3AED; border: 0.5px solid #DDD6FE; }
 .lp-tag-soon { background: #EEEDFE; color: #3C3489; }
 .lp-sim-pitch { font-size: 13px; color: #6C757D; line-height: 1.6; margin-bottom: 10px; }
 .lp-sim-meta { display: flex; align-items: center; gap: 6px; }
@@ -13963,11 +13964,12 @@ document.addEventListener('click', function(e) {
       gamesInDomain.forEach(function(g) {
         var isFree = !g.price || g.price === '0' || g.price === 'gratuit';
         var accessLabel = isFree ? '<span class="lp-sim-access lp-tag-free">Accès libre</span>' : '<span class="lp-sim-access lp-tag-member">Accès membre</span>';
+        var levelLabel = g.diff ? '<span class="lp-sim-access lp-tag-level">' + g.diff + '</span>' : '';
         var skillsText = (g.skills || []).slice(0, 3).join(' · ');
         var desc = g.desc || g.sub || '';
         cardsHtml += '<div class="lp-sim-card">' +
           '<div class="lp-sim-left">' +
-            '<div class="lp-sim-top"><span class="lp-sim-company">' + (g.title || g.id) + '</span>' + accessLabel + '</div>' +
+            '<div class="lp-sim-top"><span class="lp-sim-company">' + (g.title || g.id) + '</span>' + accessLabel + levelLabel + '</div>' +
             '<div class="lp-sim-pitch">' + (g.sub || '') + '</div>' +
             (skillsText ? '<div class="lp-sim-meta"><span class="lp-diff-label" style="color:#ADB5BD;font-size:11px">' + skillsText + '</span></div>' : '') +
           '</div>' +
